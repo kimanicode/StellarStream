@@ -9,6 +9,7 @@ export {
 
 export { LedgerVerificationService } from "./ledger-verification.service.js";
 export { AuditLogService } from "./audit-log.service.js";
+
 export {
   BatchMetadataService,
   type BatchMetadataResponse,
@@ -17,8 +18,20 @@ export {
 } from "./batch-metadata.service.js";
 
 export { SnapshotService } from "./snapshot.service.js";
-export { scheduleSnapshotMaintenance, runMaintenanceNow } from "./snapshot.scheduler.js";
+export {
+  scheduleSnapshotMaintenance,
+  runMaintenanceNow,
+} from "./snapshot.scheduler.js";
+
 export { WebhookService } from "./webhook.service.js";
+
+// Bridge landing / cross-chain listener
+export {
+  BridgeListenerService,
+  type BridgeLandingEvent,
+} from "./bridge-listener.service.js";
+
+// Background cleanup for stale streams
 export {
   StaleStreamCleanupService,
   type CleanupResult,
