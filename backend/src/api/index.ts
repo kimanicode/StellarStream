@@ -1,4 +1,2 @@
-// API routes and controllers
-// Will contain REST API endpoints for querying stream data
-
-export {};
+export { default as v2Router } from './v2.js';
+export { swaggerSpec } from './swagger.js';
