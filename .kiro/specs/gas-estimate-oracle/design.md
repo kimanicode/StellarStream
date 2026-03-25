@@ -2,212 +2,232 @@
 
 ## Overview
 
-The Gas-Estimate Oracle is a lightweight Node.js/TypeScript backend service that sits between the Nebula V2 frontend and the Stellar Soroban RPC node. When the frontend needs to show a user the cost of an operation before they sign, it calls `GET /api/v2/fees/estimate?transaction_xdr=<base64-xdr>`. The service simulates the transaction against the Soroban RPC, extracts the inclusion fee and resource fee, applies a 10% safety buffer to the resource fee, and returns the breakdown as JSON.
+The Gas-Estimate Oracle is a Next.js API route (`GET /api/v2/fees/estimate`) that simulates a Soroban transaction via the Stellar RPC, applies a 10% safety buffer to the resource fee, and returns both the inclusion fee and buffered resource fee to the frontend. The implementation lives entirely in the Next.js `frontend/` application using TypeScript.
 
-The service is intentionally minimal: no database, no authentication, stateless. It is deployed as a standalone HTTP server alongside the existing Next.js frontend.
+The flow is:
+1. Frontend sends `GET /api/v2/fees/estimate?transactionXdr=<base64>`
+2. API route calls the Simulation Service with the XDR
+3. Simulation Service calls `simulateTransaction` on the Soroban RPC
+4. Fee Estimator applies the 10% buffer to the resource fee increment
+5. API route returns `{ inclusionFee, resourceFee }` in stroops
 
 ## Architecture
 
 ```mermaid
 sequenceDiagram
-    participant FE as Frontend (Next.js)
-    participant API as Fee API (Express)
-    participant SIM as Simulation Service
-    participant RPC as Soroban RPC Node
+    participant FE as Frontend
+    participant API as Next.js API Route<br/>/api/v2/fees/estimate
+    participant SIM as SimulationService
+    participant EST as FeeEstimator
+    participant RPC as Soroban RPC
 
-    FE->>API: GET /api/v2/fees/estimate?transaction_xdr=...
+    FE->>API: GET /api/v2/fees/estimate?transactionXdr=...
     API->>SIM: simulate(transactionXdr)
     SIM->>RPC: POST simulateTransaction
-    RPC-->>SIM: SimulateTransactionResponse
-    SIM-->>API: RawFeeData
-    API->>API: FeeCalculator.applyBuffer(rawFees)
-    API-->>FE: { inclusion_fee_stroops, resource_fee_stroops, total_fee_stroops, buffered: true }
-```
-
-```mermaid
-graph TD
-    A[Fee API - Express Router] --> B[Request Validator]
-    B --> C[Simulation Service]
-    C --> D[Soroban RPC Client]
-    D --> E[Soroban RPC Node]
-    C --> F[Fee Calculator]
-    F --> A
+    RPC-->>SIM: SimulateTransactionResult
+    SIM-->>API: SimulationResult | SimulationError
+    API->>EST: estimateFees(simulationResult)
+    EST-->>API: FeeEstimate { inclusionFee, resourceFee }
+    API-->>FE: 200 { inclusionFee, resourceFee }
 ```
 
 ## Components and Interfaces
 
-### Fee API (Express Router)
-
-Entry point. Validates the incoming request, delegates to the Simulation Service, and formats the response.
-
-```typescript
-// GET /api/v2/fees/estimate
-// Query params: transaction_xdr (required, base64 XDR string)
-// Response: FeeEstimateResponse | ErrorResponse
-```
-
-### Simulation Service
+### SimulationService (`frontend/lib/simulation-service.ts`)
 
 Wraps the Soroban RPC `simulateTransaction` JSON-RPC call.
 
 ```typescript
-interface SimulationService {
-  simulate(transactionXdr: string): Promise<RawFeeData>;
+export interface SimulationSuccess {
+  minResourceFee: string;       // raw stroop value as string (from RPC)
+  sorobanData: string;          // base64 XDR SorobanTransactionData
+  restoreFootprint?: object;    // present if state expiry detected
 }
 
-interface RawFeeData {
-  minResourceFee: number; // stroops, from RPC response
-  inclusionFee: number;   // stroops, base fee from transaction
-}
-```
-
-The Soroban RPC `simulateTransaction` response shape (relevant fields):
-
-```json
-{
-  "result": {
-    "minResourceFee": "12345",
-    "cost": {
-      "cpuInsns": "1000000",
-      "memBytes": "50000"
-    }
-  }
-}
-```
-
-`minResourceFee` is the resource fee increment. The inclusion fee is derived from the transaction's `fee` field in the XDR envelope.
-
-### Fee Calculator
-
-Pure functions — no side effects, easy to test.
-
-```typescript
-interface FeeCalculator {
-  applyBuffer(raw: RawFeeData): BufferedFees;
-}
-
-interface BufferedFees {
-  inclusionFeeStroops: number;
-  resourceFeeStroops: number; // ceil(minResourceFee * 1.10)
-  totalFeeStroops: number;    // inclusionFeeStroops + resourceFeeStroops
-}
-```
-
-### API Response Types
-
-```typescript
-interface FeeEstimateResponse {
-  inclusion_fee_stroops: number;
-  resource_fee_stroops: number;
-  total_fee_stroops: number;
-  buffered: true;
-}
-
-interface ErrorResponse {
-  error: string;
+export interface SimulationError {
+  kind: "rpc_error" | "network_error" | "malformed";
   message: string;
 }
+
+export type SimulationResult = SimulationSuccess | SimulationError;
+
+export function isSimulationError(r: SimulationResult): r is SimulationError;
+
+export async function simulate(
+  transactionXdr: string,
+  rpcUrl: string
+): Promise<SimulationResult>;
 ```
+
+The service sends a JSON-RPC 2.0 POST request:
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "simulateTransaction",
+  "params": { "transaction": "<transactionXdr>" }
+}
+```
+
+### FeeEstimator (`frontend/lib/fee-estimator.ts`)
+
+Applies the 10% safety buffer and extracts the inclusion fee.
+
+```typescript
+export interface FeeEstimate {
+  inclusionFee: number;   // stroops, integer, no buffer
+  resourceFee: number;    // stroops, integer, ceil(raw * 1.10)
+}
+
+export interface EstimationError {
+  kind: "malformed_result";
+  message: string;
+}
+
+export type EstimationResult = FeeEstimate | EstimationError;
+
+export function isEstimationError(r: EstimationResult): r is EstimationError;
+
+export function estimateFees(simulation: SimulationSuccess): EstimationResult;
+```
+
+Buffer formula:
+```
+resourceFee = Math.ceil(parseInt(minResourceFee, 10) * 1.10)
+inclusionFee = parseInt(minResourceFee, 10)
+```
+
+> Note: The Soroban RPC `simulateTransaction` response returns `minResourceFee` as the total minimum fee covering both inclusion and resource costs. The resource fee increment (CPU/RAM) is embedded in the `sorobanData` XDR. For the purposes of this feature, `minResourceFee` is used as the base for both values: `inclusionFee` is the raw value, and `resourceFee` is the buffered value. This matches the Stellar SDK's `assembleTransaction` pattern.
+
+### API Route (`frontend/app/api/v2/fees/estimate/route.ts`)
+
+Next.js App Router route handler.
+
+```typescript
+export async function GET(request: Request): Promise<Response>
+```
+
+**Request**: `GET /api/v2/fees/estimate?transactionXdr=<base64-xdr>`
+
+**Success Response (200)**:
+```json
+{
+  "inclusionFee": 12345,
+  "resourceFee": 13580
+}
+```
+
+**Error Responses**:
+| Status | Condition |
+|--------|-----------|
+| 400 | `transactionXdr` missing or empty |
+| 422 | Simulation result is malformed |
+| 502 | Soroban RPC error or network failure |
+| 503 | `SOROBAN_RPC_URL` not configured (and no default fallback) |
 
 ## Data Models
 
-### Environment Configuration
+### Soroban RPC Response Shape
 
-| Variable | Required | Default | Description |
-|---|---|---|---|
-| `SOROBAN_RPC_URL` | Yes | — | Full URL of the Soroban RPC node |
-| `PORT` | No | `3001` | HTTP listen port |
-| `CORS_ORIGIN` | No | `*` | Allowed CORS origin |
+The `simulateTransaction` RPC method returns:
 
-### Fee Calculation Model
-
+```typescript
+interface SorobanSimulateResponse {
+  jsonrpc: "2.0";
+  id: number;
+  result?: {
+    minResourceFee: string;       // stroops as decimal string
+    sorobanData: string;          // base64 XDR
+    results?: Array<{ xdr: string }>;
+    restoreFootprint?: object;
+    error?: string;               // present on simulation-level error
+  };
+  error?: {                       // present on RPC-level error
+    code: number;
+    message: string;
+  };
+}
 ```
-buffered_resource_fee = ceil(minResourceFee * 1.10)
-total_fee = inclusionFee + buffered_resource_fee
+
+### Fee Estimate Response
+
+```typescript
+interface FeeEstimateResponse {
+  inclusionFee: number;   // integer stroops
+  resourceFee: number;    // integer stroops (buffered)
+}
 ```
 
-All values are non-negative integers in stroops. The inclusion fee is extracted from the XDR transaction envelope's `fee` field. The resource fee comes from the RPC simulation result's `minResourceFee` field.
+### Error Response
+
+```typescript
+interface ErrorResponse {
+  error: string;          // human-readable message
+}
+```
 
 ## Correctness Properties
 
 *A property is a characteristic or behavior that should hold true across all valid executions of a system — essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
 
-Property 1: Safety buffer is always at least 10%
-*For any* non-negative raw resource fee, the buffered resource fee produced by Fee_Calculator SHALL be greater than or equal to `ceil(raw * 1.10)`.
-**Validates: Requirements 2.1, 2.2**
+Property 1: Resource fee is always >= inclusion fee
+*For any* valid simulation result with a positive `minResourceFee`, the `resourceFee` returned by `estimateFees` should be greater than or equal to the `inclusionFee` (since the buffer only increases the value).
+**Validates: Requirements 2.1, 2.3**
 
-Property 2: Zero resource fee stays zero
-*For any* simulation result where `minResourceFee` is zero, the buffered resource fee SHALL be zero.
-**Validates: Requirements 2.3**
+Property 2: Buffer is exactly 10% (ceiling)
+*For any* non-negative integer raw resource fee `r`, `estimateFees` should return `resourceFee = Math.ceil(r * 1.10)`.
+**Validates: Requirements 2.1, 2.3**
 
-Property 3: Inclusion fee is preserved unchanged
-*For any* raw fee data, the `inclusionFeeStroops` in the buffered output SHALL equal the `inclusionFee` in the raw input.
+Property 3: Zero resource fee stays zero
+*For any* simulation result where `minResourceFee` is `"0"`, `estimateFees` should return `resourceFee = 0`.
+**Validates: Requirements 2.2**
+
+Property 4: Inclusion fee equals raw minResourceFee
+*For any* valid simulation result, `inclusionFee` should equal `parseInt(minResourceFee, 10)` with no modification.
 **Validates: Requirements 2.4**
 
-Property 4: Total fee is the sum of its parts
-*For any* buffered fee result, `totalFeeStroops` SHALL equal `inclusionFeeStroops + resourceFeeStroops`.
+Property 5: Missing minResourceFee yields estimation error
+*For any* simulation result object that lacks the `minResourceFee` field, `estimateFees` should return an `EstimationError` with `kind: "malformed_result"`.
 **Validates: Requirements 2.5**
 
-Property 5: All fee values are non-negative integers
-*For any* valid simulation result, all three fee fields in the API response SHALL be non-negative integers.
-**Validates: Requirements 3.7**
-
-Property 6: Buffer is idempotent on zero
-*For any* call to `applyBuffer` with `minResourceFee = 0`, calling it again on the result SHALL produce the same output.
-**Validates: Requirements 2.3**
+Property 6: API returns integer fee values
+*For any* successful fee estimate response, both `inclusionFee` and `resourceFee` in the JSON body should be integers (no decimal component).
+**Validates: Requirements 3.6**
 
 ## Error Handling
 
-| Scenario | HTTP Status | Error Field |
-|---|---|---|
-| Missing `transaction_xdr` param | 400 | `"missing_parameter"` |
-| Malformed XDR string | 422 | `"invalid_xdr"` |
-| Soroban RPC simulation error | 502 | `"simulation_failed"` |
-| RPC node unreachable / timeout | 502 | `"rpc_unreachable"` |
-| Unhandled exception | 500 | `"internal_error"` |
+| Scenario | Component | HTTP Status | Log Level |
+|----------|-----------|-------------|-----------|
+| Missing `transactionXdr` param | API Route | 400 | warn |
+| RPC network unreachable | SimulationService | 502 | error |
+| RPC returns error field | SimulationService | 502 | error |
+| `minResourceFee` missing | FeeEstimator | 422 | error |
+| `SOROBAN_RPC_URL` not set | API Route | fallback to testnet | warn |
 
-All error responses follow the `ErrorResponse` shape: `{ error: string, message: string }`.
+All error responses use the shape `{ "error": "<message>" }`. Stack traces are never serialized into responses.
 
-The service does not retry failed RPC calls — retries are the caller's responsibility. The 10-second RPC timeout (Requirement 1.4) is enforced via an `AbortController` on the fetch call.
+Logging uses `console.error` / `console.warn` with the truncated XDR (first 64 chars) as context, compatible with Next.js server-side logging.
 
 ## Testing Strategy
 
-### Dual Testing Approach
+### Unit Tests (Jest / Vitest)
 
-Both unit tests and property-based tests are used. Unit tests cover specific examples, edge cases, and integration points. Property tests verify universal correctness of the Fee Calculator across all numeric inputs.
+- `FeeEstimator`: test buffer formula for representative values, zero input, and missing field
+- `SimulationService`: mock `fetch` to test success path, RPC error path, and network failure path
+- API Route: use Next.js `createMocks` or `Request`/`Response` constructors to test each HTTP status code path
 
-### Property-Based Testing
+### Property-Based Tests (fast-check)
 
-Library: **fast-check** (TypeScript)
+Each property from the Correctness Properties section maps to one property-based test using [fast-check](https://github.com/dubzzz/fast-check) (already compatible with Jest/Vitest, no extra setup needed for TypeScript projects).
 
-Each property test runs a minimum of 100 iterations.
+- Minimum 100 iterations per property test
+- Tag format: `// Feature: gas-estimate-oracle, Property N: <property_text>`
 
-- **Property 1 test**: Generate arbitrary non-negative integers for `minResourceFee`, assert `buffered >= ceil(raw * 1.10)`.
-- **Property 2 test**: Input `minResourceFee = 0`, assert output is `0`. (edge-case, included in generator range)
-- **Property 3 test**: Generate arbitrary `inclusionFee` values, assert output `inclusionFeeStroops === input inclusionFee`.
-- **Property 4 test**: Generate arbitrary `RawFeeData`, assert `total === inclusion + resource`.
-- **Property 5 test**: Generate arbitrary valid simulation responses, assert all response fields are non-negative integers.
+**Property test targets**:
+- Property 1 & 2: `fc.integer({ min: 1 })` → verify `resourceFee >= inclusionFee` and `resourceFee === Math.ceil(raw * 1.10)`
+- Property 3: fixed input `"0"` → verify `resourceFee === 0` (edge case, single example)
+- Property 4: `fc.integer({ min: 0 })` → verify `inclusionFee === raw`
+- Property 5: `fc.record({})` (no `minResourceFee`) → verify error kind
+- Property 6: `fc.integer({ min: 0 })` → verify `Number.isInteger(resourceFee) && Number.isInteger(inclusionFee)`
 
-Tag format: `Feature: gas-estimate-oracle, Property N: <property_text>`
-
-### Unit Tests
-
-- Simulation Service: mock the RPC HTTP call, assert correct field extraction from a known response fixture.
-- Fee API: use `supertest` to test each HTTP status code path (400, 422, 502, 500, 200).
-- Health endpoint: assert `GET /health` returns `200 { status: "ok" }`.
-- Configuration: assert service exits with non-zero code when `SOROBAN_RPC_URL` is unset.
-
-### Test File Layout
-
-```
-backend/
-  src/
-    simulation-service.ts
-    fee-calculator.ts
-    api.ts
-    config.ts
-  tests/
-    fee-calculator.test.ts       # unit + property tests
-    simulation-service.test.ts   # unit tests with mocked RPC
-    api.test.ts                  # integration tests via supertest
-```
+Properties 1, 2, 4, and 6 can be combined into a single comprehensive property test since they all operate on the same `estimateFees` function with valid integer inputs.
