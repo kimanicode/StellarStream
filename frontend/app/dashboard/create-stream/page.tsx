@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { ShieldAlert } from "lucide-react";
+import { ShieldAlert, ArrowLeftRight } from "lucide-react";
 import { useProtocolStatus } from "@/lib/use-protocol-status";
 import PrivacyShieldToggle from "@/components/privacy-shield-toggle";
+import SwapAndStream from "@/components/swap-and-stream";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface FormData {
@@ -485,8 +486,46 @@ function Step1({
   form: FormData;
   update: (patch: Partial<FormData>) => void;
 }) {
+  const [showSwap, setShowSwap] = useState(false);
+
+  if (showSwap) {
+    return (
+      <div style={{ animation: "slideInRight 0.38s cubic-bezier(0.16,1,0.3,1)" }}>
+        <SwapAndStream
+          onComplete={(_, toAsset) => {
+            update({ asset: toAsset.symbol });
+            setShowSwap(false);
+          }}
+          onCancel={() => setShowSwap(false)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
+      {/* Swap entry point banner */}
+      <button
+        type="button"
+        onClick={() => setShowSwap(true)}
+        className="w-full flex items-center justify-between gap-3 rounded-2xl border border-dashed border-white/10 bg-white/[0.02] hover:bg-white/[0.05] hover:border-cyan-400/20 px-4 py-3 transition-all duration-200 group"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center group-hover:bg-cyan-400/15 transition-colors">
+            <ArrowLeftRight size={14} className="text-cyan-400/70 group-hover:text-cyan-400 transition-colors" />
+          </div>
+          <div className="text-left">
+            <p className="font-body text-xs font-bold text-white/60 group-hover:text-white/80 transition-colors">
+              Don&apos;t have the right asset?
+            </p>
+            <p className="font-body text-[11px] text-white/30">Swap first, then stream in one flow</p>
+          </div>
+        </div>
+        <span className="font-body text-[10px] font-bold text-cyan-400/60 group-hover:text-cyan-400 tracking-wider uppercase transition-colors">
+          Swap →
+        </span>
+      </button>
+
       <Field label="Select Asset">
         <div className="grid grid-cols-3 gap-2">
           {ASSETS.map((a) => {
