@@ -53,9 +53,8 @@ use soroban_sdk::{
 use storage::{PROPOSAL_COUNT, RECEIPT, RESTRICTED_ADDRESSES, STREAM_COUNT};
 use types::{
     ContributorRequest, CurveType, DataKey, Milestone, ProposalApprovedEvent, ProposalCreatedEvent,
-    ReceiptMetadata, RequestCreatedEvent, RequestExecutedEvent,
-    RequestKey, RequestStatus, Role, Stream, StreamCancelledEvent,
-    StreamCreatedEvent, StreamProposal, StreamReceipt,
+    ReceiptMetadata, RequestCreatedEvent, RequestExecutedEvent, RequestKey, RequestStatus, Role,
+    Stream, StreamCancelledEvent, StreamCreatedEvent, StreamProposal, StreamReceipt,
 };
 
 #[contract]
