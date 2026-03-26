@@ -5,6 +5,7 @@ use crate::types::{PermitArgs, StreamArgs};
 use soroban_sdk::{
     testutils::{Address as _, Ledger},
     token::TokenClient,
+    vec, Address, Env, String,
     Address, Env,
 };
 
@@ -77,6 +78,30 @@ fn test_init_cannot_be_called_twice() {
 
     let result = client.try_init(&admin);
     assert!(result.is_err());
+}
+
+#[test]
+fn test_version_returns_v2() {
+    let env = Env::default();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    assert_eq!(client.version(), 2);
+}
+
+#[test]
+fn test_metadata_returns_official_spec_uri() {
+    let env = Env::default();
+    let admin = Address::generate(&env);
+    let (_, client) = setup_v2(&env, &admin);
+
+    assert_eq!(
+        client.metadata(),
+        String::from_str(
+            &env,
+            "https://raw.githubusercontent.com/Emmyt24/StellarStream/main/contracts/Contract-V2/contract-metadata.json",
+        )
+    );
 }
 
 // ── Migration bridge tests ────────────────────────────────────────────────────
@@ -976,6 +1001,10 @@ fn test_create_batch_streams_success() {
             multiplier_bps: 0,
             vault_address: None,
             yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
             is_recurrent: false,
             cycle_duration: 0,
             cancellation_type: 0,
@@ -993,6 +1022,10 @@ fn test_create_batch_streams_success() {
             multiplier_bps: 0,
             vault_address: None,
             yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
             is_recurrent: false,
             cycle_duration: 0,
             cancellation_type: 0,
@@ -1052,6 +1085,10 @@ fn test_create_batch_streams_max_limit() {
             multiplier_bps: 0,
             vault_address: None,
             yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
             is_recurrent: false,
             cycle_duration: 0,
             cancellation_type: 0,
@@ -1095,6 +1132,10 @@ fn test_create_batch_streams_atomic_failure() {
             multiplier_bps: 0,
             vault_address: None,
             yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
             is_recurrent: false,
             cycle_duration: 0,
             cancellation_type: 0,
@@ -1112,6 +1153,10 @@ fn test_create_batch_streams_atomic_failure() {
             multiplier_bps: 0,
             vault_address: None,
             yield_enabled: false,
+        is_recurrent: false,
+        cycle_duration: 0,
+        cancellation_type: 0,
+        affiliate: None,
             is_recurrent: false,
             cycle_duration: 0,
             cancellation_type: 0,
