@@ -10,6 +10,8 @@ import { useTransactionPriority, type PriorityTier } from "@/lib/use-transaction
 import SwapAndStream from "@/components/swap-and-stream";
 import { InsufficientXLMCard, NetworkCongestedCard } from "@/components/error-recovery-cards";
 import type { RecoveryErrorType } from "@/components/error-recovery-cards";
+import { useHardwareWalletTimeout } from "@/lib/hooks/use-hardware-wallet-timeout";
+import { ConfirmOnDeviceModal } from "@/components/confirm-on-device-modal";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface FormData {
@@ -933,6 +935,15 @@ export default function CreateStreamPage() {
   // ── Emergency gate (#426) ────────────────────────────────────────────────────
   const { isEmergency } = useProtocolStatus();
 
+  // ── Hardware wallet timeout (#XXX) ───────────────────────────────────────────
+  const {
+    confirmModalOpen,
+    activeDeviceName,
+    closeConfirmModal,
+    prepareForSigning,
+    getTimeout,
+  } = useHardwareWalletTimeout();
+
   const update = useCallback((patch: Partial<FormData>) => {
     setForm((prev) => ({ ...prev, ...patch }));
   }, []);
@@ -981,8 +992,27 @@ export default function CreateStreamPage() {
     const feeStoops = totalFeeStroops(0);
     console.info(`[CreateStream] Submitting with fee: ${feeStoops} stroops (priority: ${priorityTier.id})`);
     setRecoveryError(null);
+
+    // Get hardware wallet timeout configuration
+    const { timeoutMs, isHardwareWallet, isLargeTransaction } = getTimeout();
+    const timeoutSeconds = Math.ceil(timeoutMs / 1000);
+    
+    // Prepare transaction for signing (shows modal if needed)
+    const mockXdrTransaction = btoa("mock-transaction-xdr-data");
+    prepareForSigning(mockXdrTransaction);
+
+    // Log security info
+    if (isHardwareWallet) {
+      console.info(
+        `[CreateStream] Hardware wallet detected. Using extended timeout: ${timeoutSeconds}s`,
+        { isLargeTransaction }
+      );
+    }
+
+    // Simulate transaction signing with appropriate timeout
     await new Promise((r) => setTimeout(r, 2200));
     setSigning(false);
+    closeConfirmModal();
 
     // Simulate recovery errors on first two attempts for demo purposes
     const attempt = signAttempts + 1;
@@ -1144,6 +1174,23 @@ export default function CreateStreamPage() {
           </div>
         </div>
       )}
+
+      {/* Confirm on Device Modal — for hardware wallets */}
+      <ConfirmOnDeviceModal
+        isOpen={confirmModalOpen}
+        walletType="hardware"
+        deviceName={activeDeviceName || "Hardware Wallet"}
+        timeoutSeconds={Math.ceil(getTimeout().timeoutMs / 1000)}
+        isLargeTransaction={getTimeout().isLargeTransaction}
+        onTimeout={() => {
+          closeConfirmModal();
+          setSigning(false);
+          setRecoveryError("network-congested");
+        }}
+        onConfirmed={() => {
+          closeConfirmModal();
+        }}
+      />
     </div>
   );
 }
