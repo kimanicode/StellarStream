@@ -87,6 +87,11 @@ export function Sidebar({ onOpenAuditLog }: SidebarProps) {
       icon: ClipboardCheck,
     },
     {
+      label: "Splitter",
+      href: "/dashboard/splitter",
+      icon: Share2,
+    },
+    {
       label: "History",
       onClick: onOpenAuditLog,
       icon: HistoryIcon,

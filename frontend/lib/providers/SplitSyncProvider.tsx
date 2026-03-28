@@ -58,6 +58,7 @@ export function useSplitSync(): SplitSyncContextValue {
 // ─── Provider ─────────────────────────────────────────────────────────────────
 
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL ?? "http://localhost:3001";
+const STORAGE_KEY = "stellar_stream_split_drafts";
 
 interface SplitSyncProviderProps {
     children: ReactNode;
