@@ -28,4 +28,10 @@ pub enum Error {
     EmptyRecipients = 23,
     NotYetReleased = 22,
     InvalidBpsSum = 24,
+    /// Returned when a split with the same (sender, recipients, amount, salt) hash
+    /// has already been processed — prevents double-spend on network retries.
+    AlreadyProcessed = 25,
+    /// Returned by the pre-flight check when the sender's balance is insufficient
+    /// to cover the total split amount.
+    InsufficientBalance = 26,
 }
