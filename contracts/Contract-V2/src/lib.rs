@@ -41,6 +41,14 @@ const GAS_FEE_PER_SPLIT_STROOPS: i128 = 10_000_000;
 /// Maximum protocol fee (5%) - protects users from admin abuse (Issue #415)
 pub const MAX_FEE_BPS: u32 = 500;
 
+/// Tiered fee configuration for "Whale" discounts.
+#[soroban_sdk::contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct FeeTier {
+    pub threshold: i128, // Amount in stroops to qualify for this tier
+    pub fee_bps: u32,    // The fee percentage in basis points
+}
+
 #[soroban_sdk::contractclient(name = "VaultClient")]
 pub trait VaultTrait {
     fn deposit(env: Env, amount: i128);
@@ -2236,7 +2244,20 @@ impl Contract {
     }
 
     fn apply_protocol_fee(env: &Env, token: &Address, total_amount: i128) -> Result<i128, Error> {
-        let fee_bps = storage::get_fee_bps(env);
+        let mut fee_bps = storage::get_fee_bps(env);
+
+        // Whale discount: Apply tiered logic if configured
+        if let Some(tiers) = storage::get_fee_tiers(env) {
+            for tier in tiers.iter() {
+                if total_amount >= tier.threshold {
+                    fee_bps = tier.fee_bps;
+                } else {
+                    // Since tiers are sorted ascending, we stop at the first threshold not met
+                    break;
+                }
+            }
+        }
+
         if fee_bps == 0 {
             return Ok(total_amount);
         }
