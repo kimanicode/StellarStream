@@ -173,6 +173,21 @@ export type DisbursementDraft = $Result.DefaultSelection<Prisma.$DisbursementDra
  * 
  */
 export type DisbursementDraftVersion = $Result.DefaultSelection<Prisma.$DisbursementDraftVersionPayload>
+/**
+ * Model MultisigProposal
+ * 
+ */
+export type MultisigProposal = $Result.DefaultSelection<Prisma.$MultisigProposalPayload>
+/**
+ * Model CachedAsset
+ * 
+ */
+export type CachedAsset = $Result.DefaultSelection<Prisma.$CachedAssetPayload>
+/**
+ * Model SplitLink
+ * 
+ */
+export type SplitLink = $Result.DefaultSelection<Prisma.$SplitLinkPayload>
 
 /**
  * Enums
@@ -674,6 +689,36 @@ export class PrismaClient<
     * ```
     */
   get disbursementDraftVersion(): Prisma.DisbursementDraftVersionDelegate<ExtArgs>;
+
+  /**
+   * `prisma.multisigProposal`: Exposes CRUD operations for the **MultisigProposal** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MultisigProposals
+    * const multisigProposals = await prisma.multisigProposal.findMany()
+    * ```
+    */
+  get multisigProposal(): Prisma.MultisigProposalDelegate<ExtArgs>;
+
+  /**
+   * `prisma.cachedAsset`: Exposes CRUD operations for the **CachedAsset** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CachedAssets
+    * const cachedAssets = await prisma.cachedAsset.findMany()
+    * ```
+    */
+  get cachedAsset(): Prisma.CachedAssetDelegate<ExtArgs>;
+
+  /**
+   * `prisma.splitLink`: Exposes CRUD operations for the **SplitLink** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SplitLinks
+    * const splitLinks = await prisma.splitLink.findMany()
+    * ```
+    */
+  get splitLink(): Prisma.SplitLinkDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -1146,7 +1191,10 @@ export namespace Prisma {
     SplitLog: 'SplitLog',
     MonitoredTransaction: 'MonitoredTransaction',
     DisbursementDraft: 'DisbursementDraft',
-    DisbursementDraftVersion: 'DisbursementDraftVersion'
+    DisbursementDraftVersion: 'DisbursementDraftVersion',
+    MultisigProposal: 'MultisigProposal',
+    CachedAsset: 'CachedAsset',
+    SplitLink: 'SplitLink'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1162,7 +1210,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "stream" | "contractEvent" | "tokenPrice" | "webhook" | "webhookDelivery" | "syncState" | "eventLog" | "streamSnapshot" | "streamArchive" | "bridgeLog" | "proposal" | "organizationMember" | "apiKey" | "ledgerHash" | "notificationSubscription" | "invoiceLink" | "affiliate" | "globalStats" | "globalStats_V3" | "tvlSnapshot" | "asset" | "autopilotSchedule" | "assetConfig" | "disbursement" | "splitRecipient" | "assetMapping" | "priceHistory" | "protocolInefficiencyReport" | "splitLog" | "monitoredTransaction" | "disbursementDraft" | "disbursementDraftVersion"
+      modelProps: "stream" | "contractEvent" | "tokenPrice" | "webhook" | "webhookDelivery" | "syncState" | "eventLog" | "streamSnapshot" | "streamArchive" | "bridgeLog" | "proposal" | "organizationMember" | "apiKey" | "ledgerHash" | "notificationSubscription" | "invoiceLink" | "affiliate" | "globalStats" | "globalStats_V3" | "tvlSnapshot" | "asset" | "autopilotSchedule" | "assetConfig" | "disbursement" | "splitRecipient" | "assetMapping" | "priceHistory" | "protocolInefficiencyReport" | "splitLog" | "monitoredTransaction" | "disbursementDraft" | "disbursementDraftVersion" | "multisigProposal" | "cachedAsset" | "splitLink"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3403,6 +3451,216 @@ export namespace Prisma {
           count: {
             args: Prisma.DisbursementDraftVersionCountArgs<ExtArgs>
             result: $Utils.Optional<DisbursementDraftVersionCountAggregateOutputType> | number
+          }
+        }
+      }
+      MultisigProposal: {
+        payload: Prisma.$MultisigProposalPayload<ExtArgs>
+        fields: Prisma.MultisigProposalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MultisigProposalFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MultisigProposalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MultisigProposalFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MultisigProposalPayload>
+          }
+          findFirst: {
+            args: Prisma.MultisigProposalFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MultisigProposalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MultisigProposalFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MultisigProposalPayload>
+          }
+          findMany: {
+            args: Prisma.MultisigProposalFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MultisigProposalPayload>[]
+          }
+          create: {
+            args: Prisma.MultisigProposalCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MultisigProposalPayload>
+          }
+          createMany: {
+            args: Prisma.MultisigProposalCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MultisigProposalCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MultisigProposalPayload>[]
+          }
+          delete: {
+            args: Prisma.MultisigProposalDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MultisigProposalPayload>
+          }
+          update: {
+            args: Prisma.MultisigProposalUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MultisigProposalPayload>
+          }
+          deleteMany: {
+            args: Prisma.MultisigProposalDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MultisigProposalUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MultisigProposalUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MultisigProposalPayload>
+          }
+          aggregate: {
+            args: Prisma.MultisigProposalAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMultisigProposal>
+          }
+          groupBy: {
+            args: Prisma.MultisigProposalGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MultisigProposalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MultisigProposalCountArgs<ExtArgs>
+            result: $Utils.Optional<MultisigProposalCountAggregateOutputType> | number
+          }
+        }
+      }
+      CachedAsset: {
+        payload: Prisma.$CachedAssetPayload<ExtArgs>
+        fields: Prisma.CachedAssetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CachedAssetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CachedAssetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CachedAssetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CachedAssetPayload>
+          }
+          findFirst: {
+            args: Prisma.CachedAssetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CachedAssetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CachedAssetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CachedAssetPayload>
+          }
+          findMany: {
+            args: Prisma.CachedAssetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CachedAssetPayload>[]
+          }
+          create: {
+            args: Prisma.CachedAssetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CachedAssetPayload>
+          }
+          createMany: {
+            args: Prisma.CachedAssetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CachedAssetCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CachedAssetPayload>[]
+          }
+          delete: {
+            args: Prisma.CachedAssetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CachedAssetPayload>
+          }
+          update: {
+            args: Prisma.CachedAssetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CachedAssetPayload>
+          }
+          deleteMany: {
+            args: Prisma.CachedAssetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CachedAssetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CachedAssetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CachedAssetPayload>
+          }
+          aggregate: {
+            args: Prisma.CachedAssetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCachedAsset>
+          }
+          groupBy: {
+            args: Prisma.CachedAssetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CachedAssetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CachedAssetCountArgs<ExtArgs>
+            result: $Utils.Optional<CachedAssetCountAggregateOutputType> | number
+          }
+        }
+      }
+      SplitLink: {
+        payload: Prisma.$SplitLinkPayload<ExtArgs>
+        fields: Prisma.SplitLinkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SplitLinkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SplitLinkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SplitLinkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SplitLinkPayload>
+          }
+          findFirst: {
+            args: Prisma.SplitLinkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SplitLinkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SplitLinkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SplitLinkPayload>
+          }
+          findMany: {
+            args: Prisma.SplitLinkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SplitLinkPayload>[]
+          }
+          create: {
+            args: Prisma.SplitLinkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SplitLinkPayload>
+          }
+          createMany: {
+            args: Prisma.SplitLinkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SplitLinkCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SplitLinkPayload>[]
+          }
+          delete: {
+            args: Prisma.SplitLinkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SplitLinkPayload>
+          }
+          update: {
+            args: Prisma.SplitLinkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SplitLinkPayload>
+          }
+          deleteMany: {
+            args: Prisma.SplitLinkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SplitLinkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SplitLinkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SplitLinkPayload>
+          }
+          aggregate: {
+            args: Prisma.SplitLinkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSplitLink>
+          }
+          groupBy: {
+            args: Prisma.SplitLinkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SplitLinkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SplitLinkCountArgs<ExtArgs>
+            result: $Utils.Optional<SplitLinkCountAggregateOutputType> | number
           }
         }
       }
@@ -34532,6 +34790,2954 @@ export namespace Prisma {
 
 
   /**
+   * Model MultisigProposal
+   */
+
+  export type AggregateMultisigProposal = {
+    _count: MultisigProposalCountAggregateOutputType | null
+    _avg: MultisigProposalAvgAggregateOutputType | null
+    _sum: MultisigProposalSumAggregateOutputType | null
+    _min: MultisigProposalMinAggregateOutputType | null
+    _max: MultisigProposalMaxAggregateOutputType | null
+  }
+
+  export type MultisigProposalAvgAggregateOutputType = {
+    requiredSigners: number | null
+  }
+
+  export type MultisigProposalSumAggregateOutputType = {
+    requiredSigners: number | null
+  }
+
+  export type MultisigProposalMinAggregateOutputType = {
+    id: string | null
+    proposalId: string | null
+    organizationId: string | null
+    transactionXdr: string | null
+    requiredSigners: number | null
+    status: string | null
+    submittedTxHash: string | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    expiresAt: Date | null
+  }
+
+  export type MultisigProposalMaxAggregateOutputType = {
+    id: string | null
+    proposalId: string | null
+    organizationId: string | null
+    transactionXdr: string | null
+    requiredSigners: number | null
+    status: string | null
+    submittedTxHash: string | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    expiresAt: Date | null
+  }
+
+  export type MultisigProposalCountAggregateOutputType = {
+    id: number
+    proposalId: number
+    organizationId: number
+    transactionXdr: number
+    signatures: number
+    requiredSigners: number
+    status: number
+    submittedTxHash: number
+    errorMessage: number
+    createdAt: number
+    updatedAt: number
+    expiresAt: number
+    _all: number
+  }
+
+
+  export type MultisigProposalAvgAggregateInputType = {
+    requiredSigners?: true
+  }
+
+  export type MultisigProposalSumAggregateInputType = {
+    requiredSigners?: true
+  }
+
+  export type MultisigProposalMinAggregateInputType = {
+    id?: true
+    proposalId?: true
+    organizationId?: true
+    transactionXdr?: true
+    requiredSigners?: true
+    status?: true
+    submittedTxHash?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+    expiresAt?: true
+  }
+
+  export type MultisigProposalMaxAggregateInputType = {
+    id?: true
+    proposalId?: true
+    organizationId?: true
+    transactionXdr?: true
+    requiredSigners?: true
+    status?: true
+    submittedTxHash?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+    expiresAt?: true
+  }
+
+  export type MultisigProposalCountAggregateInputType = {
+    id?: true
+    proposalId?: true
+    organizationId?: true
+    transactionXdr?: true
+    signatures?: true
+    requiredSigners?: true
+    status?: true
+    submittedTxHash?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+    expiresAt?: true
+    _all?: true
+  }
+
+  export type MultisigProposalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MultisigProposal to aggregate.
+     */
+    where?: MultisigProposalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MultisigProposals to fetch.
+     */
+    orderBy?: MultisigProposalOrderByWithRelationInput | MultisigProposalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MultisigProposalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MultisigProposals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MultisigProposals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MultisigProposals
+    **/
+    _count?: true | MultisigProposalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MultisigProposalAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MultisigProposalSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MultisigProposalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MultisigProposalMaxAggregateInputType
+  }
+
+  export type GetMultisigProposalAggregateType<T extends MultisigProposalAggregateArgs> = {
+        [P in keyof T & keyof AggregateMultisigProposal]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMultisigProposal[P]>
+      : GetScalarType<T[P], AggregateMultisigProposal[P]>
+  }
+
+
+
+
+  export type MultisigProposalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MultisigProposalWhereInput
+    orderBy?: MultisigProposalOrderByWithAggregationInput | MultisigProposalOrderByWithAggregationInput[]
+    by: MultisigProposalScalarFieldEnum[] | MultisigProposalScalarFieldEnum
+    having?: MultisigProposalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MultisigProposalCountAggregateInputType | true
+    _avg?: MultisigProposalAvgAggregateInputType
+    _sum?: MultisigProposalSumAggregateInputType
+    _min?: MultisigProposalMinAggregateInputType
+    _max?: MultisigProposalMaxAggregateInputType
+  }
+
+  export type MultisigProposalGroupByOutputType = {
+    id: string
+    proposalId: string
+    organizationId: string
+    transactionXdr: string
+    signatures: JsonValue
+    requiredSigners: number
+    status: string
+    submittedTxHash: string | null
+    errorMessage: string | null
+    createdAt: Date
+    updatedAt: Date
+    expiresAt: Date
+    _count: MultisigProposalCountAggregateOutputType | null
+    _avg: MultisigProposalAvgAggregateOutputType | null
+    _sum: MultisigProposalSumAggregateOutputType | null
+    _min: MultisigProposalMinAggregateOutputType | null
+    _max: MultisigProposalMaxAggregateOutputType | null
+  }
+
+  type GetMultisigProposalGroupByPayload<T extends MultisigProposalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MultisigProposalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MultisigProposalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MultisigProposalGroupByOutputType[P]>
+            : GetScalarType<T[P], MultisigProposalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MultisigProposalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    proposalId?: boolean
+    organizationId?: boolean
+    transactionXdr?: boolean
+    signatures?: boolean
+    requiredSigners?: boolean
+    status?: boolean
+    submittedTxHash?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    expiresAt?: boolean
+  }, ExtArgs["result"]["multisigProposal"]>
+
+  export type MultisigProposalSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    proposalId?: boolean
+    organizationId?: boolean
+    transactionXdr?: boolean
+    signatures?: boolean
+    requiredSigners?: boolean
+    status?: boolean
+    submittedTxHash?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    expiresAt?: boolean
+  }, ExtArgs["result"]["multisigProposal"]>
+
+  export type MultisigProposalSelectScalar = {
+    id?: boolean
+    proposalId?: boolean
+    organizationId?: boolean
+    transactionXdr?: boolean
+    signatures?: boolean
+    requiredSigners?: boolean
+    status?: boolean
+    submittedTxHash?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    expiresAt?: boolean
+  }
+
+
+  export type $MultisigProposalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MultisigProposal"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      proposalId: string
+      organizationId: string
+      transactionXdr: string
+      signatures: Prisma.JsonValue
+      requiredSigners: number
+      status: string
+      submittedTxHash: string | null
+      errorMessage: string | null
+      createdAt: Date
+      updatedAt: Date
+      expiresAt: Date
+    }, ExtArgs["result"]["multisigProposal"]>
+    composites: {}
+  }
+
+  type MultisigProposalGetPayload<S extends boolean | null | undefined | MultisigProposalDefaultArgs> = $Result.GetResult<Prisma.$MultisigProposalPayload, S>
+
+  type MultisigProposalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<MultisigProposalFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: MultisigProposalCountAggregateInputType | true
+    }
+
+  export interface MultisigProposalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MultisigProposal'], meta: { name: 'MultisigProposal' } }
+    /**
+     * Find zero or one MultisigProposal that matches the filter.
+     * @param {MultisigProposalFindUniqueArgs} args - Arguments to find a MultisigProposal
+     * @example
+     * // Get one MultisigProposal
+     * const multisigProposal = await prisma.multisigProposal.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MultisigProposalFindUniqueArgs>(args: SelectSubset<T, MultisigProposalFindUniqueArgs<ExtArgs>>): Prisma__MultisigProposalClient<$Result.GetResult<Prisma.$MultisigProposalPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one MultisigProposal that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {MultisigProposalFindUniqueOrThrowArgs} args - Arguments to find a MultisigProposal
+     * @example
+     * // Get one MultisigProposal
+     * const multisigProposal = await prisma.multisigProposal.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MultisigProposalFindUniqueOrThrowArgs>(args: SelectSubset<T, MultisigProposalFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MultisigProposalClient<$Result.GetResult<Prisma.$MultisigProposalPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first MultisigProposal that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MultisigProposalFindFirstArgs} args - Arguments to find a MultisigProposal
+     * @example
+     * // Get one MultisigProposal
+     * const multisigProposal = await prisma.multisigProposal.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MultisigProposalFindFirstArgs>(args?: SelectSubset<T, MultisigProposalFindFirstArgs<ExtArgs>>): Prisma__MultisigProposalClient<$Result.GetResult<Prisma.$MultisigProposalPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first MultisigProposal that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MultisigProposalFindFirstOrThrowArgs} args - Arguments to find a MultisigProposal
+     * @example
+     * // Get one MultisigProposal
+     * const multisigProposal = await prisma.multisigProposal.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MultisigProposalFindFirstOrThrowArgs>(args?: SelectSubset<T, MultisigProposalFindFirstOrThrowArgs<ExtArgs>>): Prisma__MultisigProposalClient<$Result.GetResult<Prisma.$MultisigProposalPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more MultisigProposals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MultisigProposalFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MultisigProposals
+     * const multisigProposals = await prisma.multisigProposal.findMany()
+     * 
+     * // Get first 10 MultisigProposals
+     * const multisigProposals = await prisma.multisigProposal.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const multisigProposalWithIdOnly = await prisma.multisigProposal.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MultisigProposalFindManyArgs>(args?: SelectSubset<T, MultisigProposalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MultisigProposalPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a MultisigProposal.
+     * @param {MultisigProposalCreateArgs} args - Arguments to create a MultisigProposal.
+     * @example
+     * // Create one MultisigProposal
+     * const MultisigProposal = await prisma.multisigProposal.create({
+     *   data: {
+     *     // ... data to create a MultisigProposal
+     *   }
+     * })
+     * 
+     */
+    create<T extends MultisigProposalCreateArgs>(args: SelectSubset<T, MultisigProposalCreateArgs<ExtArgs>>): Prisma__MultisigProposalClient<$Result.GetResult<Prisma.$MultisigProposalPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many MultisigProposals.
+     * @param {MultisigProposalCreateManyArgs} args - Arguments to create many MultisigProposals.
+     * @example
+     * // Create many MultisigProposals
+     * const multisigProposal = await prisma.multisigProposal.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MultisigProposalCreateManyArgs>(args?: SelectSubset<T, MultisigProposalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MultisigProposals and returns the data saved in the database.
+     * @param {MultisigProposalCreateManyAndReturnArgs} args - Arguments to create many MultisigProposals.
+     * @example
+     * // Create many MultisigProposals
+     * const multisigProposal = await prisma.multisigProposal.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MultisigProposals and only return the `id`
+     * const multisigProposalWithIdOnly = await prisma.multisigProposal.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MultisigProposalCreateManyAndReturnArgs>(args?: SelectSubset<T, MultisigProposalCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MultisigProposalPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a MultisigProposal.
+     * @param {MultisigProposalDeleteArgs} args - Arguments to delete one MultisigProposal.
+     * @example
+     * // Delete one MultisigProposal
+     * const MultisigProposal = await prisma.multisigProposal.delete({
+     *   where: {
+     *     // ... filter to delete one MultisigProposal
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MultisigProposalDeleteArgs>(args: SelectSubset<T, MultisigProposalDeleteArgs<ExtArgs>>): Prisma__MultisigProposalClient<$Result.GetResult<Prisma.$MultisigProposalPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one MultisigProposal.
+     * @param {MultisigProposalUpdateArgs} args - Arguments to update one MultisigProposal.
+     * @example
+     * // Update one MultisigProposal
+     * const multisigProposal = await prisma.multisigProposal.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MultisigProposalUpdateArgs>(args: SelectSubset<T, MultisigProposalUpdateArgs<ExtArgs>>): Prisma__MultisigProposalClient<$Result.GetResult<Prisma.$MultisigProposalPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more MultisigProposals.
+     * @param {MultisigProposalDeleteManyArgs} args - Arguments to filter MultisigProposals to delete.
+     * @example
+     * // Delete a few MultisigProposals
+     * const { count } = await prisma.multisigProposal.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MultisigProposalDeleteManyArgs>(args?: SelectSubset<T, MultisigProposalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MultisigProposals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MultisigProposalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MultisigProposals
+     * const multisigProposal = await prisma.multisigProposal.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MultisigProposalUpdateManyArgs>(args: SelectSubset<T, MultisigProposalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MultisigProposal.
+     * @param {MultisigProposalUpsertArgs} args - Arguments to update or create a MultisigProposal.
+     * @example
+     * // Update or create a MultisigProposal
+     * const multisigProposal = await prisma.multisigProposal.upsert({
+     *   create: {
+     *     // ... data to create a MultisigProposal
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MultisigProposal we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MultisigProposalUpsertArgs>(args: SelectSubset<T, MultisigProposalUpsertArgs<ExtArgs>>): Prisma__MultisigProposalClient<$Result.GetResult<Prisma.$MultisigProposalPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of MultisigProposals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MultisigProposalCountArgs} args - Arguments to filter MultisigProposals to count.
+     * @example
+     * // Count the number of MultisigProposals
+     * const count = await prisma.multisigProposal.count({
+     *   where: {
+     *     // ... the filter for the MultisigProposals we want to count
+     *   }
+     * })
+    **/
+    count<T extends MultisigProposalCountArgs>(
+      args?: Subset<T, MultisigProposalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MultisigProposalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MultisigProposal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MultisigProposalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MultisigProposalAggregateArgs>(args: Subset<T, MultisigProposalAggregateArgs>): Prisma.PrismaPromise<GetMultisigProposalAggregateType<T>>
+
+    /**
+     * Group by MultisigProposal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MultisigProposalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MultisigProposalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MultisigProposalGroupByArgs['orderBy'] }
+        : { orderBy?: MultisigProposalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MultisigProposalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMultisigProposalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MultisigProposal model
+   */
+  readonly fields: MultisigProposalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MultisigProposal.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MultisigProposalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MultisigProposal model
+   */ 
+  interface MultisigProposalFieldRefs {
+    readonly id: FieldRef<"MultisigProposal", 'String'>
+    readonly proposalId: FieldRef<"MultisigProposal", 'String'>
+    readonly organizationId: FieldRef<"MultisigProposal", 'String'>
+    readonly transactionXdr: FieldRef<"MultisigProposal", 'String'>
+    readonly signatures: FieldRef<"MultisigProposal", 'Json'>
+    readonly requiredSigners: FieldRef<"MultisigProposal", 'Int'>
+    readonly status: FieldRef<"MultisigProposal", 'String'>
+    readonly submittedTxHash: FieldRef<"MultisigProposal", 'String'>
+    readonly errorMessage: FieldRef<"MultisigProposal", 'String'>
+    readonly createdAt: FieldRef<"MultisigProposal", 'DateTime'>
+    readonly updatedAt: FieldRef<"MultisigProposal", 'DateTime'>
+    readonly expiresAt: FieldRef<"MultisigProposal", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MultisigProposal findUnique
+   */
+  export type MultisigProposalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelect<ExtArgs> | null
+    /**
+     * Filter, which MultisigProposal to fetch.
+     */
+    where: MultisigProposalWhereUniqueInput
+  }
+
+  /**
+   * MultisigProposal findUniqueOrThrow
+   */
+  export type MultisigProposalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelect<ExtArgs> | null
+    /**
+     * Filter, which MultisigProposal to fetch.
+     */
+    where: MultisigProposalWhereUniqueInput
+  }
+
+  /**
+   * MultisigProposal findFirst
+   */
+  export type MultisigProposalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelect<ExtArgs> | null
+    /**
+     * Filter, which MultisigProposal to fetch.
+     */
+    where?: MultisigProposalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MultisigProposals to fetch.
+     */
+    orderBy?: MultisigProposalOrderByWithRelationInput | MultisigProposalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MultisigProposals.
+     */
+    cursor?: MultisigProposalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MultisigProposals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MultisigProposals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MultisigProposals.
+     */
+    distinct?: MultisigProposalScalarFieldEnum | MultisigProposalScalarFieldEnum[]
+  }
+
+  /**
+   * MultisigProposal findFirstOrThrow
+   */
+  export type MultisigProposalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelect<ExtArgs> | null
+    /**
+     * Filter, which MultisigProposal to fetch.
+     */
+    where?: MultisigProposalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MultisigProposals to fetch.
+     */
+    orderBy?: MultisigProposalOrderByWithRelationInput | MultisigProposalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MultisigProposals.
+     */
+    cursor?: MultisigProposalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MultisigProposals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MultisigProposals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MultisigProposals.
+     */
+    distinct?: MultisigProposalScalarFieldEnum | MultisigProposalScalarFieldEnum[]
+  }
+
+  /**
+   * MultisigProposal findMany
+   */
+  export type MultisigProposalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelect<ExtArgs> | null
+    /**
+     * Filter, which MultisigProposals to fetch.
+     */
+    where?: MultisigProposalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MultisigProposals to fetch.
+     */
+    orderBy?: MultisigProposalOrderByWithRelationInput | MultisigProposalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MultisigProposals.
+     */
+    cursor?: MultisigProposalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MultisigProposals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MultisigProposals.
+     */
+    skip?: number
+    distinct?: MultisigProposalScalarFieldEnum | MultisigProposalScalarFieldEnum[]
+  }
+
+  /**
+   * MultisigProposal create
+   */
+  export type MultisigProposalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelect<ExtArgs> | null
+    /**
+     * The data needed to create a MultisigProposal.
+     */
+    data: XOR<MultisigProposalCreateInput, MultisigProposalUncheckedCreateInput>
+  }
+
+  /**
+   * MultisigProposal createMany
+   */
+  export type MultisigProposalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MultisigProposals.
+     */
+    data: MultisigProposalCreateManyInput | MultisigProposalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MultisigProposal createManyAndReturn
+   */
+  export type MultisigProposalCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many MultisigProposals.
+     */
+    data: MultisigProposalCreateManyInput | MultisigProposalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MultisigProposal update
+   */
+  export type MultisigProposalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelect<ExtArgs> | null
+    /**
+     * The data needed to update a MultisigProposal.
+     */
+    data: XOR<MultisigProposalUpdateInput, MultisigProposalUncheckedUpdateInput>
+    /**
+     * Choose, which MultisigProposal to update.
+     */
+    where: MultisigProposalWhereUniqueInput
+  }
+
+  /**
+   * MultisigProposal updateMany
+   */
+  export type MultisigProposalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MultisigProposals.
+     */
+    data: XOR<MultisigProposalUpdateManyMutationInput, MultisigProposalUncheckedUpdateManyInput>
+    /**
+     * Filter which MultisigProposals to update
+     */
+    where?: MultisigProposalWhereInput
+  }
+
+  /**
+   * MultisigProposal upsert
+   */
+  export type MultisigProposalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelect<ExtArgs> | null
+    /**
+     * The filter to search for the MultisigProposal to update in case it exists.
+     */
+    where: MultisigProposalWhereUniqueInput
+    /**
+     * In case the MultisigProposal found by the `where` argument doesn't exist, create a new MultisigProposal with this data.
+     */
+    create: XOR<MultisigProposalCreateInput, MultisigProposalUncheckedCreateInput>
+    /**
+     * In case the MultisigProposal was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MultisigProposalUpdateInput, MultisigProposalUncheckedUpdateInput>
+  }
+
+  /**
+   * MultisigProposal delete
+   */
+  export type MultisigProposalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelect<ExtArgs> | null
+    /**
+     * Filter which MultisigProposal to delete.
+     */
+    where: MultisigProposalWhereUniqueInput
+  }
+
+  /**
+   * MultisigProposal deleteMany
+   */
+  export type MultisigProposalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MultisigProposals to delete
+     */
+    where?: MultisigProposalWhereInput
+  }
+
+  /**
+   * MultisigProposal without action
+   */
+  export type MultisigProposalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MultisigProposal
+     */
+    select?: MultisigProposalSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CachedAsset
+   */
+
+  export type AggregateCachedAsset = {
+    _count: CachedAssetCountAggregateOutputType | null
+    _avg: CachedAssetAvgAggregateOutputType | null
+    _sum: CachedAssetSumAggregateOutputType | null
+    _min: CachedAssetMinAggregateOutputType | null
+    _max: CachedAssetMaxAggregateOutputType | null
+  }
+
+  export type CachedAssetAvgAggregateOutputType = {
+    decimals: number | null
+  }
+
+  export type CachedAssetSumAggregateOutputType = {
+    decimals: number | null
+  }
+
+  export type CachedAssetMinAggregateOutputType = {
+    id: string | null
+    tokenAddress: string | null
+    code: string | null
+    issuer: string | null
+    name: string | null
+    description: string | null
+    imageUrl: string | null
+    isVerified: boolean | null
+    decimals: number | null
+    lastSyncedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CachedAssetMaxAggregateOutputType = {
+    id: string | null
+    tokenAddress: string | null
+    code: string | null
+    issuer: string | null
+    name: string | null
+    description: string | null
+    imageUrl: string | null
+    isVerified: boolean | null
+    decimals: number | null
+    lastSyncedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CachedAssetCountAggregateOutputType = {
+    id: number
+    tokenAddress: number
+    code: number
+    issuer: number
+    name: number
+    description: number
+    imageUrl: number
+    isVerified: number
+    decimals: number
+    lastSyncedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CachedAssetAvgAggregateInputType = {
+    decimals?: true
+  }
+
+  export type CachedAssetSumAggregateInputType = {
+    decimals?: true
+  }
+
+  export type CachedAssetMinAggregateInputType = {
+    id?: true
+    tokenAddress?: true
+    code?: true
+    issuer?: true
+    name?: true
+    description?: true
+    imageUrl?: true
+    isVerified?: true
+    decimals?: true
+    lastSyncedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CachedAssetMaxAggregateInputType = {
+    id?: true
+    tokenAddress?: true
+    code?: true
+    issuer?: true
+    name?: true
+    description?: true
+    imageUrl?: true
+    isVerified?: true
+    decimals?: true
+    lastSyncedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CachedAssetCountAggregateInputType = {
+    id?: true
+    tokenAddress?: true
+    code?: true
+    issuer?: true
+    name?: true
+    description?: true
+    imageUrl?: true
+    isVerified?: true
+    decimals?: true
+    lastSyncedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CachedAssetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CachedAsset to aggregate.
+     */
+    where?: CachedAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CachedAssets to fetch.
+     */
+    orderBy?: CachedAssetOrderByWithRelationInput | CachedAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CachedAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CachedAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CachedAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CachedAssets
+    **/
+    _count?: true | CachedAssetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CachedAssetAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CachedAssetSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CachedAssetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CachedAssetMaxAggregateInputType
+  }
+
+  export type GetCachedAssetAggregateType<T extends CachedAssetAggregateArgs> = {
+        [P in keyof T & keyof AggregateCachedAsset]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCachedAsset[P]>
+      : GetScalarType<T[P], AggregateCachedAsset[P]>
+  }
+
+
+
+
+  export type CachedAssetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CachedAssetWhereInput
+    orderBy?: CachedAssetOrderByWithAggregationInput | CachedAssetOrderByWithAggregationInput[]
+    by: CachedAssetScalarFieldEnum[] | CachedAssetScalarFieldEnum
+    having?: CachedAssetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CachedAssetCountAggregateInputType | true
+    _avg?: CachedAssetAvgAggregateInputType
+    _sum?: CachedAssetSumAggregateInputType
+    _min?: CachedAssetMinAggregateInputType
+    _max?: CachedAssetMaxAggregateInputType
+  }
+
+  export type CachedAssetGroupByOutputType = {
+    id: string
+    tokenAddress: string
+    code: string
+    issuer: string
+    name: string | null
+    description: string | null
+    imageUrl: string | null
+    isVerified: boolean
+    decimals: number
+    lastSyncedAt: Date
+    createdAt: Date
+    updatedAt: Date
+    _count: CachedAssetCountAggregateOutputType | null
+    _avg: CachedAssetAvgAggregateOutputType | null
+    _sum: CachedAssetSumAggregateOutputType | null
+    _min: CachedAssetMinAggregateOutputType | null
+    _max: CachedAssetMaxAggregateOutputType | null
+  }
+
+  type GetCachedAssetGroupByPayload<T extends CachedAssetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CachedAssetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CachedAssetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CachedAssetGroupByOutputType[P]>
+            : GetScalarType<T[P], CachedAssetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CachedAssetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tokenAddress?: boolean
+    code?: boolean
+    issuer?: boolean
+    name?: boolean
+    description?: boolean
+    imageUrl?: boolean
+    isVerified?: boolean
+    decimals?: boolean
+    lastSyncedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["cachedAsset"]>
+
+  export type CachedAssetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tokenAddress?: boolean
+    code?: boolean
+    issuer?: boolean
+    name?: boolean
+    description?: boolean
+    imageUrl?: boolean
+    isVerified?: boolean
+    decimals?: boolean
+    lastSyncedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["cachedAsset"]>
+
+  export type CachedAssetSelectScalar = {
+    id?: boolean
+    tokenAddress?: boolean
+    code?: boolean
+    issuer?: boolean
+    name?: boolean
+    description?: boolean
+    imageUrl?: boolean
+    isVerified?: boolean
+    decimals?: boolean
+    lastSyncedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $CachedAssetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CachedAsset"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tokenAddress: string
+      code: string
+      issuer: string
+      name: string | null
+      description: string | null
+      imageUrl: string | null
+      isVerified: boolean
+      decimals: number
+      lastSyncedAt: Date
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["cachedAsset"]>
+    composites: {}
+  }
+
+  type CachedAssetGetPayload<S extends boolean | null | undefined | CachedAssetDefaultArgs> = $Result.GetResult<Prisma.$CachedAssetPayload, S>
+
+  type CachedAssetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<CachedAssetFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: CachedAssetCountAggregateInputType | true
+    }
+
+  export interface CachedAssetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CachedAsset'], meta: { name: 'CachedAsset' } }
+    /**
+     * Find zero or one CachedAsset that matches the filter.
+     * @param {CachedAssetFindUniqueArgs} args - Arguments to find a CachedAsset
+     * @example
+     * // Get one CachedAsset
+     * const cachedAsset = await prisma.cachedAsset.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CachedAssetFindUniqueArgs>(args: SelectSubset<T, CachedAssetFindUniqueArgs<ExtArgs>>): Prisma__CachedAssetClient<$Result.GetResult<Prisma.$CachedAssetPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one CachedAsset that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {CachedAssetFindUniqueOrThrowArgs} args - Arguments to find a CachedAsset
+     * @example
+     * // Get one CachedAsset
+     * const cachedAsset = await prisma.cachedAsset.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CachedAssetFindUniqueOrThrowArgs>(args: SelectSubset<T, CachedAssetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CachedAssetClient<$Result.GetResult<Prisma.$CachedAssetPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first CachedAsset that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CachedAssetFindFirstArgs} args - Arguments to find a CachedAsset
+     * @example
+     * // Get one CachedAsset
+     * const cachedAsset = await prisma.cachedAsset.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CachedAssetFindFirstArgs>(args?: SelectSubset<T, CachedAssetFindFirstArgs<ExtArgs>>): Prisma__CachedAssetClient<$Result.GetResult<Prisma.$CachedAssetPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first CachedAsset that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CachedAssetFindFirstOrThrowArgs} args - Arguments to find a CachedAsset
+     * @example
+     * // Get one CachedAsset
+     * const cachedAsset = await prisma.cachedAsset.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CachedAssetFindFirstOrThrowArgs>(args?: SelectSubset<T, CachedAssetFindFirstOrThrowArgs<ExtArgs>>): Prisma__CachedAssetClient<$Result.GetResult<Prisma.$CachedAssetPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more CachedAssets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CachedAssetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CachedAssets
+     * const cachedAssets = await prisma.cachedAsset.findMany()
+     * 
+     * // Get first 10 CachedAssets
+     * const cachedAssets = await prisma.cachedAsset.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cachedAssetWithIdOnly = await prisma.cachedAsset.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CachedAssetFindManyArgs>(args?: SelectSubset<T, CachedAssetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CachedAssetPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a CachedAsset.
+     * @param {CachedAssetCreateArgs} args - Arguments to create a CachedAsset.
+     * @example
+     * // Create one CachedAsset
+     * const CachedAsset = await prisma.cachedAsset.create({
+     *   data: {
+     *     // ... data to create a CachedAsset
+     *   }
+     * })
+     * 
+     */
+    create<T extends CachedAssetCreateArgs>(args: SelectSubset<T, CachedAssetCreateArgs<ExtArgs>>): Prisma__CachedAssetClient<$Result.GetResult<Prisma.$CachedAssetPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many CachedAssets.
+     * @param {CachedAssetCreateManyArgs} args - Arguments to create many CachedAssets.
+     * @example
+     * // Create many CachedAssets
+     * const cachedAsset = await prisma.cachedAsset.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CachedAssetCreateManyArgs>(args?: SelectSubset<T, CachedAssetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CachedAssets and returns the data saved in the database.
+     * @param {CachedAssetCreateManyAndReturnArgs} args - Arguments to create many CachedAssets.
+     * @example
+     * // Create many CachedAssets
+     * const cachedAsset = await prisma.cachedAsset.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CachedAssets and only return the `id`
+     * const cachedAssetWithIdOnly = await prisma.cachedAsset.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CachedAssetCreateManyAndReturnArgs>(args?: SelectSubset<T, CachedAssetCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CachedAssetPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a CachedAsset.
+     * @param {CachedAssetDeleteArgs} args - Arguments to delete one CachedAsset.
+     * @example
+     * // Delete one CachedAsset
+     * const CachedAsset = await prisma.cachedAsset.delete({
+     *   where: {
+     *     // ... filter to delete one CachedAsset
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CachedAssetDeleteArgs>(args: SelectSubset<T, CachedAssetDeleteArgs<ExtArgs>>): Prisma__CachedAssetClient<$Result.GetResult<Prisma.$CachedAssetPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one CachedAsset.
+     * @param {CachedAssetUpdateArgs} args - Arguments to update one CachedAsset.
+     * @example
+     * // Update one CachedAsset
+     * const cachedAsset = await prisma.cachedAsset.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CachedAssetUpdateArgs>(args: SelectSubset<T, CachedAssetUpdateArgs<ExtArgs>>): Prisma__CachedAssetClient<$Result.GetResult<Prisma.$CachedAssetPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more CachedAssets.
+     * @param {CachedAssetDeleteManyArgs} args - Arguments to filter CachedAssets to delete.
+     * @example
+     * // Delete a few CachedAssets
+     * const { count } = await prisma.cachedAsset.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CachedAssetDeleteManyArgs>(args?: SelectSubset<T, CachedAssetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CachedAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CachedAssetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CachedAssets
+     * const cachedAsset = await prisma.cachedAsset.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CachedAssetUpdateManyArgs>(args: SelectSubset<T, CachedAssetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CachedAsset.
+     * @param {CachedAssetUpsertArgs} args - Arguments to update or create a CachedAsset.
+     * @example
+     * // Update or create a CachedAsset
+     * const cachedAsset = await prisma.cachedAsset.upsert({
+     *   create: {
+     *     // ... data to create a CachedAsset
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CachedAsset we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CachedAssetUpsertArgs>(args: SelectSubset<T, CachedAssetUpsertArgs<ExtArgs>>): Prisma__CachedAssetClient<$Result.GetResult<Prisma.$CachedAssetPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of CachedAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CachedAssetCountArgs} args - Arguments to filter CachedAssets to count.
+     * @example
+     * // Count the number of CachedAssets
+     * const count = await prisma.cachedAsset.count({
+     *   where: {
+     *     // ... the filter for the CachedAssets we want to count
+     *   }
+     * })
+    **/
+    count<T extends CachedAssetCountArgs>(
+      args?: Subset<T, CachedAssetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CachedAssetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CachedAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CachedAssetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CachedAssetAggregateArgs>(args: Subset<T, CachedAssetAggregateArgs>): Prisma.PrismaPromise<GetCachedAssetAggregateType<T>>
+
+    /**
+     * Group by CachedAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CachedAssetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CachedAssetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CachedAssetGroupByArgs['orderBy'] }
+        : { orderBy?: CachedAssetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CachedAssetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCachedAssetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CachedAsset model
+   */
+  readonly fields: CachedAssetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CachedAsset.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CachedAssetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CachedAsset model
+   */ 
+  interface CachedAssetFieldRefs {
+    readonly id: FieldRef<"CachedAsset", 'String'>
+    readonly tokenAddress: FieldRef<"CachedAsset", 'String'>
+    readonly code: FieldRef<"CachedAsset", 'String'>
+    readonly issuer: FieldRef<"CachedAsset", 'String'>
+    readonly name: FieldRef<"CachedAsset", 'String'>
+    readonly description: FieldRef<"CachedAsset", 'String'>
+    readonly imageUrl: FieldRef<"CachedAsset", 'String'>
+    readonly isVerified: FieldRef<"CachedAsset", 'Boolean'>
+    readonly decimals: FieldRef<"CachedAsset", 'Int'>
+    readonly lastSyncedAt: FieldRef<"CachedAsset", 'DateTime'>
+    readonly createdAt: FieldRef<"CachedAsset", 'DateTime'>
+    readonly updatedAt: FieldRef<"CachedAsset", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CachedAsset findUnique
+   */
+  export type CachedAssetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelect<ExtArgs> | null
+    /**
+     * Filter, which CachedAsset to fetch.
+     */
+    where: CachedAssetWhereUniqueInput
+  }
+
+  /**
+   * CachedAsset findUniqueOrThrow
+   */
+  export type CachedAssetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelect<ExtArgs> | null
+    /**
+     * Filter, which CachedAsset to fetch.
+     */
+    where: CachedAssetWhereUniqueInput
+  }
+
+  /**
+   * CachedAsset findFirst
+   */
+  export type CachedAssetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelect<ExtArgs> | null
+    /**
+     * Filter, which CachedAsset to fetch.
+     */
+    where?: CachedAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CachedAssets to fetch.
+     */
+    orderBy?: CachedAssetOrderByWithRelationInput | CachedAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CachedAssets.
+     */
+    cursor?: CachedAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CachedAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CachedAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CachedAssets.
+     */
+    distinct?: CachedAssetScalarFieldEnum | CachedAssetScalarFieldEnum[]
+  }
+
+  /**
+   * CachedAsset findFirstOrThrow
+   */
+  export type CachedAssetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelect<ExtArgs> | null
+    /**
+     * Filter, which CachedAsset to fetch.
+     */
+    where?: CachedAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CachedAssets to fetch.
+     */
+    orderBy?: CachedAssetOrderByWithRelationInput | CachedAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CachedAssets.
+     */
+    cursor?: CachedAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CachedAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CachedAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CachedAssets.
+     */
+    distinct?: CachedAssetScalarFieldEnum | CachedAssetScalarFieldEnum[]
+  }
+
+  /**
+   * CachedAsset findMany
+   */
+  export type CachedAssetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelect<ExtArgs> | null
+    /**
+     * Filter, which CachedAssets to fetch.
+     */
+    where?: CachedAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CachedAssets to fetch.
+     */
+    orderBy?: CachedAssetOrderByWithRelationInput | CachedAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CachedAssets.
+     */
+    cursor?: CachedAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CachedAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CachedAssets.
+     */
+    skip?: number
+    distinct?: CachedAssetScalarFieldEnum | CachedAssetScalarFieldEnum[]
+  }
+
+  /**
+   * CachedAsset create
+   */
+  export type CachedAssetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelect<ExtArgs> | null
+    /**
+     * The data needed to create a CachedAsset.
+     */
+    data: XOR<CachedAssetCreateInput, CachedAssetUncheckedCreateInput>
+  }
+
+  /**
+   * CachedAsset createMany
+   */
+  export type CachedAssetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CachedAssets.
+     */
+    data: CachedAssetCreateManyInput | CachedAssetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CachedAsset createManyAndReturn
+   */
+  export type CachedAssetCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many CachedAssets.
+     */
+    data: CachedAssetCreateManyInput | CachedAssetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CachedAsset update
+   */
+  export type CachedAssetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelect<ExtArgs> | null
+    /**
+     * The data needed to update a CachedAsset.
+     */
+    data: XOR<CachedAssetUpdateInput, CachedAssetUncheckedUpdateInput>
+    /**
+     * Choose, which CachedAsset to update.
+     */
+    where: CachedAssetWhereUniqueInput
+  }
+
+  /**
+   * CachedAsset updateMany
+   */
+  export type CachedAssetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CachedAssets.
+     */
+    data: XOR<CachedAssetUpdateManyMutationInput, CachedAssetUncheckedUpdateManyInput>
+    /**
+     * Filter which CachedAssets to update
+     */
+    where?: CachedAssetWhereInput
+  }
+
+  /**
+   * CachedAsset upsert
+   */
+  export type CachedAssetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelect<ExtArgs> | null
+    /**
+     * The filter to search for the CachedAsset to update in case it exists.
+     */
+    where: CachedAssetWhereUniqueInput
+    /**
+     * In case the CachedAsset found by the `where` argument doesn't exist, create a new CachedAsset with this data.
+     */
+    create: XOR<CachedAssetCreateInput, CachedAssetUncheckedCreateInput>
+    /**
+     * In case the CachedAsset was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CachedAssetUpdateInput, CachedAssetUncheckedUpdateInput>
+  }
+
+  /**
+   * CachedAsset delete
+   */
+  export type CachedAssetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelect<ExtArgs> | null
+    /**
+     * Filter which CachedAsset to delete.
+     */
+    where: CachedAssetWhereUniqueInput
+  }
+
+  /**
+   * CachedAsset deleteMany
+   */
+  export type CachedAssetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CachedAssets to delete
+     */
+    where?: CachedAssetWhereInput
+  }
+
+  /**
+   * CachedAsset without action
+   */
+  export type CachedAssetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CachedAsset
+     */
+    select?: CachedAssetSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SplitLink
+   */
+
+  export type AggregateSplitLink = {
+    _count: SplitLinkCountAggregateOutputType | null
+    _avg: SplitLinkAvgAggregateOutputType | null
+    _sum: SplitLinkSumAggregateOutputType | null
+    _min: SplitLinkMinAggregateOutputType | null
+    _max: SplitLinkMaxAggregateOutputType | null
+  }
+
+  export type SplitLinkAvgAggregateOutputType = {
+    clickCount: number | null
+  }
+
+  export type SplitLinkSumAggregateOutputType = {
+    clickCount: number | null
+  }
+
+  export type SplitLinkMinAggregateOutputType = {
+    id: string | null
+    slug: string | null
+    fullUrl: string | null
+    payloadHash: string | null
+    creatorAddress: string | null
+    clickCount: number | null
+    lastClickedAt: Date | null
+    expiresAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type SplitLinkMaxAggregateOutputType = {
+    id: string | null
+    slug: string | null
+    fullUrl: string | null
+    payloadHash: string | null
+    creatorAddress: string | null
+    clickCount: number | null
+    lastClickedAt: Date | null
+    expiresAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type SplitLinkCountAggregateOutputType = {
+    id: number
+    slug: number
+    fullUrl: number
+    payloadHash: number
+    creatorAddress: number
+    clickCount: number
+    lastClickedAt: number
+    expiresAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SplitLinkAvgAggregateInputType = {
+    clickCount?: true
+  }
+
+  export type SplitLinkSumAggregateInputType = {
+    clickCount?: true
+  }
+
+  export type SplitLinkMinAggregateInputType = {
+    id?: true
+    slug?: true
+    fullUrl?: true
+    payloadHash?: true
+    creatorAddress?: true
+    clickCount?: true
+    lastClickedAt?: true
+    expiresAt?: true
+    createdAt?: true
+  }
+
+  export type SplitLinkMaxAggregateInputType = {
+    id?: true
+    slug?: true
+    fullUrl?: true
+    payloadHash?: true
+    creatorAddress?: true
+    clickCount?: true
+    lastClickedAt?: true
+    expiresAt?: true
+    createdAt?: true
+  }
+
+  export type SplitLinkCountAggregateInputType = {
+    id?: true
+    slug?: true
+    fullUrl?: true
+    payloadHash?: true
+    creatorAddress?: true
+    clickCount?: true
+    lastClickedAt?: true
+    expiresAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SplitLinkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SplitLink to aggregate.
+     */
+    where?: SplitLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SplitLinks to fetch.
+     */
+    orderBy?: SplitLinkOrderByWithRelationInput | SplitLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SplitLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SplitLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SplitLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SplitLinks
+    **/
+    _count?: true | SplitLinkCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SplitLinkAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SplitLinkSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SplitLinkMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SplitLinkMaxAggregateInputType
+  }
+
+  export type GetSplitLinkAggregateType<T extends SplitLinkAggregateArgs> = {
+        [P in keyof T & keyof AggregateSplitLink]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSplitLink[P]>
+      : GetScalarType<T[P], AggregateSplitLink[P]>
+  }
+
+
+
+
+  export type SplitLinkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SplitLinkWhereInput
+    orderBy?: SplitLinkOrderByWithAggregationInput | SplitLinkOrderByWithAggregationInput[]
+    by: SplitLinkScalarFieldEnum[] | SplitLinkScalarFieldEnum
+    having?: SplitLinkScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SplitLinkCountAggregateInputType | true
+    _avg?: SplitLinkAvgAggregateInputType
+    _sum?: SplitLinkSumAggregateInputType
+    _min?: SplitLinkMinAggregateInputType
+    _max?: SplitLinkMaxAggregateInputType
+  }
+
+  export type SplitLinkGroupByOutputType = {
+    id: string
+    slug: string
+    fullUrl: string
+    payloadHash: string
+    creatorAddress: string
+    clickCount: number
+    lastClickedAt: Date | null
+    expiresAt: Date | null
+    createdAt: Date
+    _count: SplitLinkCountAggregateOutputType | null
+    _avg: SplitLinkAvgAggregateOutputType | null
+    _sum: SplitLinkSumAggregateOutputType | null
+    _min: SplitLinkMinAggregateOutputType | null
+    _max: SplitLinkMaxAggregateOutputType | null
+  }
+
+  type GetSplitLinkGroupByPayload<T extends SplitLinkGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SplitLinkGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SplitLinkGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SplitLinkGroupByOutputType[P]>
+            : GetScalarType<T[P], SplitLinkGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SplitLinkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    fullUrl?: boolean
+    payloadHash?: boolean
+    creatorAddress?: boolean
+    clickCount?: boolean
+    lastClickedAt?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["splitLink"]>
+
+  export type SplitLinkSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    fullUrl?: boolean
+    payloadHash?: boolean
+    creatorAddress?: boolean
+    clickCount?: boolean
+    lastClickedAt?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["splitLink"]>
+
+  export type SplitLinkSelectScalar = {
+    id?: boolean
+    slug?: boolean
+    fullUrl?: boolean
+    payloadHash?: boolean
+    creatorAddress?: boolean
+    clickCount?: boolean
+    lastClickedAt?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }
+
+
+  export type $SplitLinkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SplitLink"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      slug: string
+      fullUrl: string
+      payloadHash: string
+      creatorAddress: string
+      clickCount: number
+      lastClickedAt: Date | null
+      expiresAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["splitLink"]>
+    composites: {}
+  }
+
+  type SplitLinkGetPayload<S extends boolean | null | undefined | SplitLinkDefaultArgs> = $Result.GetResult<Prisma.$SplitLinkPayload, S>
+
+  type SplitLinkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<SplitLinkFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: SplitLinkCountAggregateInputType | true
+    }
+
+  export interface SplitLinkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SplitLink'], meta: { name: 'SplitLink' } }
+    /**
+     * Find zero or one SplitLink that matches the filter.
+     * @param {SplitLinkFindUniqueArgs} args - Arguments to find a SplitLink
+     * @example
+     * // Get one SplitLink
+     * const splitLink = await prisma.splitLink.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SplitLinkFindUniqueArgs>(args: SelectSubset<T, SplitLinkFindUniqueArgs<ExtArgs>>): Prisma__SplitLinkClient<$Result.GetResult<Prisma.$SplitLinkPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one SplitLink that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {SplitLinkFindUniqueOrThrowArgs} args - Arguments to find a SplitLink
+     * @example
+     * // Get one SplitLink
+     * const splitLink = await prisma.splitLink.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SplitLinkFindUniqueOrThrowArgs>(args: SelectSubset<T, SplitLinkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SplitLinkClient<$Result.GetResult<Prisma.$SplitLinkPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first SplitLink that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SplitLinkFindFirstArgs} args - Arguments to find a SplitLink
+     * @example
+     * // Get one SplitLink
+     * const splitLink = await prisma.splitLink.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SplitLinkFindFirstArgs>(args?: SelectSubset<T, SplitLinkFindFirstArgs<ExtArgs>>): Prisma__SplitLinkClient<$Result.GetResult<Prisma.$SplitLinkPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first SplitLink that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SplitLinkFindFirstOrThrowArgs} args - Arguments to find a SplitLink
+     * @example
+     * // Get one SplitLink
+     * const splitLink = await prisma.splitLink.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SplitLinkFindFirstOrThrowArgs>(args?: SelectSubset<T, SplitLinkFindFirstOrThrowArgs<ExtArgs>>): Prisma__SplitLinkClient<$Result.GetResult<Prisma.$SplitLinkPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more SplitLinks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SplitLinkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SplitLinks
+     * const splitLinks = await prisma.splitLink.findMany()
+     * 
+     * // Get first 10 SplitLinks
+     * const splitLinks = await prisma.splitLink.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const splitLinkWithIdOnly = await prisma.splitLink.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SplitLinkFindManyArgs>(args?: SelectSubset<T, SplitLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SplitLinkPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a SplitLink.
+     * @param {SplitLinkCreateArgs} args - Arguments to create a SplitLink.
+     * @example
+     * // Create one SplitLink
+     * const SplitLink = await prisma.splitLink.create({
+     *   data: {
+     *     // ... data to create a SplitLink
+     *   }
+     * })
+     * 
+     */
+    create<T extends SplitLinkCreateArgs>(args: SelectSubset<T, SplitLinkCreateArgs<ExtArgs>>): Prisma__SplitLinkClient<$Result.GetResult<Prisma.$SplitLinkPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many SplitLinks.
+     * @param {SplitLinkCreateManyArgs} args - Arguments to create many SplitLinks.
+     * @example
+     * // Create many SplitLinks
+     * const splitLink = await prisma.splitLink.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SplitLinkCreateManyArgs>(args?: SelectSubset<T, SplitLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SplitLinks and returns the data saved in the database.
+     * @param {SplitLinkCreateManyAndReturnArgs} args - Arguments to create many SplitLinks.
+     * @example
+     * // Create many SplitLinks
+     * const splitLink = await prisma.splitLink.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SplitLinks and only return the `id`
+     * const splitLinkWithIdOnly = await prisma.splitLink.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SplitLinkCreateManyAndReturnArgs>(args?: SelectSubset<T, SplitLinkCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SplitLinkPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a SplitLink.
+     * @param {SplitLinkDeleteArgs} args - Arguments to delete one SplitLink.
+     * @example
+     * // Delete one SplitLink
+     * const SplitLink = await prisma.splitLink.delete({
+     *   where: {
+     *     // ... filter to delete one SplitLink
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SplitLinkDeleteArgs>(args: SelectSubset<T, SplitLinkDeleteArgs<ExtArgs>>): Prisma__SplitLinkClient<$Result.GetResult<Prisma.$SplitLinkPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one SplitLink.
+     * @param {SplitLinkUpdateArgs} args - Arguments to update one SplitLink.
+     * @example
+     * // Update one SplitLink
+     * const splitLink = await prisma.splitLink.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SplitLinkUpdateArgs>(args: SelectSubset<T, SplitLinkUpdateArgs<ExtArgs>>): Prisma__SplitLinkClient<$Result.GetResult<Prisma.$SplitLinkPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more SplitLinks.
+     * @param {SplitLinkDeleteManyArgs} args - Arguments to filter SplitLinks to delete.
+     * @example
+     * // Delete a few SplitLinks
+     * const { count } = await prisma.splitLink.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SplitLinkDeleteManyArgs>(args?: SelectSubset<T, SplitLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SplitLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SplitLinkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SplitLinks
+     * const splitLink = await prisma.splitLink.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SplitLinkUpdateManyArgs>(args: SelectSubset<T, SplitLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SplitLink.
+     * @param {SplitLinkUpsertArgs} args - Arguments to update or create a SplitLink.
+     * @example
+     * // Update or create a SplitLink
+     * const splitLink = await prisma.splitLink.upsert({
+     *   create: {
+     *     // ... data to create a SplitLink
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SplitLink we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SplitLinkUpsertArgs>(args: SelectSubset<T, SplitLinkUpsertArgs<ExtArgs>>): Prisma__SplitLinkClient<$Result.GetResult<Prisma.$SplitLinkPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of SplitLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SplitLinkCountArgs} args - Arguments to filter SplitLinks to count.
+     * @example
+     * // Count the number of SplitLinks
+     * const count = await prisma.splitLink.count({
+     *   where: {
+     *     // ... the filter for the SplitLinks we want to count
+     *   }
+     * })
+    **/
+    count<T extends SplitLinkCountArgs>(
+      args?: Subset<T, SplitLinkCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SplitLinkCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SplitLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SplitLinkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SplitLinkAggregateArgs>(args: Subset<T, SplitLinkAggregateArgs>): Prisma.PrismaPromise<GetSplitLinkAggregateType<T>>
+
+    /**
+     * Group by SplitLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SplitLinkGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SplitLinkGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SplitLinkGroupByArgs['orderBy'] }
+        : { orderBy?: SplitLinkGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SplitLinkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSplitLinkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SplitLink model
+   */
+  readonly fields: SplitLinkFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SplitLink.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SplitLinkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SplitLink model
+   */ 
+  interface SplitLinkFieldRefs {
+    readonly id: FieldRef<"SplitLink", 'String'>
+    readonly slug: FieldRef<"SplitLink", 'String'>
+    readonly fullUrl: FieldRef<"SplitLink", 'String'>
+    readonly payloadHash: FieldRef<"SplitLink", 'String'>
+    readonly creatorAddress: FieldRef<"SplitLink", 'String'>
+    readonly clickCount: FieldRef<"SplitLink", 'Int'>
+    readonly lastClickedAt: FieldRef<"SplitLink", 'DateTime'>
+    readonly expiresAt: FieldRef<"SplitLink", 'DateTime'>
+    readonly createdAt: FieldRef<"SplitLink", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SplitLink findUnique
+   */
+  export type SplitLinkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelect<ExtArgs> | null
+    /**
+     * Filter, which SplitLink to fetch.
+     */
+    where: SplitLinkWhereUniqueInput
+  }
+
+  /**
+   * SplitLink findUniqueOrThrow
+   */
+  export type SplitLinkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelect<ExtArgs> | null
+    /**
+     * Filter, which SplitLink to fetch.
+     */
+    where: SplitLinkWhereUniqueInput
+  }
+
+  /**
+   * SplitLink findFirst
+   */
+  export type SplitLinkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelect<ExtArgs> | null
+    /**
+     * Filter, which SplitLink to fetch.
+     */
+    where?: SplitLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SplitLinks to fetch.
+     */
+    orderBy?: SplitLinkOrderByWithRelationInput | SplitLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SplitLinks.
+     */
+    cursor?: SplitLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SplitLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SplitLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SplitLinks.
+     */
+    distinct?: SplitLinkScalarFieldEnum | SplitLinkScalarFieldEnum[]
+  }
+
+  /**
+   * SplitLink findFirstOrThrow
+   */
+  export type SplitLinkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelect<ExtArgs> | null
+    /**
+     * Filter, which SplitLink to fetch.
+     */
+    where?: SplitLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SplitLinks to fetch.
+     */
+    orderBy?: SplitLinkOrderByWithRelationInput | SplitLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SplitLinks.
+     */
+    cursor?: SplitLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SplitLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SplitLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SplitLinks.
+     */
+    distinct?: SplitLinkScalarFieldEnum | SplitLinkScalarFieldEnum[]
+  }
+
+  /**
+   * SplitLink findMany
+   */
+  export type SplitLinkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelect<ExtArgs> | null
+    /**
+     * Filter, which SplitLinks to fetch.
+     */
+    where?: SplitLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SplitLinks to fetch.
+     */
+    orderBy?: SplitLinkOrderByWithRelationInput | SplitLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SplitLinks.
+     */
+    cursor?: SplitLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SplitLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SplitLinks.
+     */
+    skip?: number
+    distinct?: SplitLinkScalarFieldEnum | SplitLinkScalarFieldEnum[]
+  }
+
+  /**
+   * SplitLink create
+   */
+  export type SplitLinkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelect<ExtArgs> | null
+    /**
+     * The data needed to create a SplitLink.
+     */
+    data: XOR<SplitLinkCreateInput, SplitLinkUncheckedCreateInput>
+  }
+
+  /**
+   * SplitLink createMany
+   */
+  export type SplitLinkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SplitLinks.
+     */
+    data: SplitLinkCreateManyInput | SplitLinkCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SplitLink createManyAndReturn
+   */
+  export type SplitLinkCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many SplitLinks.
+     */
+    data: SplitLinkCreateManyInput | SplitLinkCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SplitLink update
+   */
+  export type SplitLinkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelect<ExtArgs> | null
+    /**
+     * The data needed to update a SplitLink.
+     */
+    data: XOR<SplitLinkUpdateInput, SplitLinkUncheckedUpdateInput>
+    /**
+     * Choose, which SplitLink to update.
+     */
+    where: SplitLinkWhereUniqueInput
+  }
+
+  /**
+   * SplitLink updateMany
+   */
+  export type SplitLinkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SplitLinks.
+     */
+    data: XOR<SplitLinkUpdateManyMutationInput, SplitLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which SplitLinks to update
+     */
+    where?: SplitLinkWhereInput
+  }
+
+  /**
+   * SplitLink upsert
+   */
+  export type SplitLinkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelect<ExtArgs> | null
+    /**
+     * The filter to search for the SplitLink to update in case it exists.
+     */
+    where: SplitLinkWhereUniqueInput
+    /**
+     * In case the SplitLink found by the `where` argument doesn't exist, create a new SplitLink with this data.
+     */
+    create: XOR<SplitLinkCreateInput, SplitLinkUncheckedCreateInput>
+    /**
+     * In case the SplitLink was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SplitLinkUpdateInput, SplitLinkUncheckedUpdateInput>
+  }
+
+  /**
+   * SplitLink delete
+   */
+  export type SplitLinkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelect<ExtArgs> | null
+    /**
+     * Filter which SplitLink to delete.
+     */
+    where: SplitLinkWhereUniqueInput
+  }
+
+  /**
+   * SplitLink deleteMany
+   */
+  export type SplitLinkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SplitLinks to delete
+     */
+    where?: SplitLinkWhereInput
+  }
+
+  /**
+   * SplitLink without action
+   */
+  export type SplitLinkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SplitLink
+     */
+    select?: SplitLinkSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -35035,6 +38241,57 @@ export namespace Prisma {
   };
 
   export type DisbursementDraftVersionScalarFieldEnum = (typeof DisbursementDraftVersionScalarFieldEnum)[keyof typeof DisbursementDraftVersionScalarFieldEnum]
+
+
+  export const MultisigProposalScalarFieldEnum: {
+    id: 'id',
+    proposalId: 'proposalId',
+    organizationId: 'organizationId',
+    transactionXdr: 'transactionXdr',
+    signatures: 'signatures',
+    requiredSigners: 'requiredSigners',
+    status: 'status',
+    submittedTxHash: 'submittedTxHash',
+    errorMessage: 'errorMessage',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    expiresAt: 'expiresAt'
+  };
+
+  export type MultisigProposalScalarFieldEnum = (typeof MultisigProposalScalarFieldEnum)[keyof typeof MultisigProposalScalarFieldEnum]
+
+
+  export const CachedAssetScalarFieldEnum: {
+    id: 'id',
+    tokenAddress: 'tokenAddress',
+    code: 'code',
+    issuer: 'issuer',
+    name: 'name',
+    description: 'description',
+    imageUrl: 'imageUrl',
+    isVerified: 'isVerified',
+    decimals: 'decimals',
+    lastSyncedAt: 'lastSyncedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CachedAssetScalarFieldEnum = (typeof CachedAssetScalarFieldEnum)[keyof typeof CachedAssetScalarFieldEnum]
+
+
+  export const SplitLinkScalarFieldEnum: {
+    id: 'id',
+    slug: 'slug',
+    fullUrl: 'fullUrl',
+    payloadHash: 'payloadHash',
+    creatorAddress: 'creatorAddress',
+    clickCount: 'clickCount',
+    lastClickedAt: 'lastClickedAt',
+    expiresAt: 'expiresAt',
+    createdAt: 'createdAt'
+  };
+
+  export type SplitLinkScalarFieldEnum = (typeof SplitLinkScalarFieldEnum)[keyof typeof SplitLinkScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -37654,6 +40911,258 @@ export namespace Prisma {
     changeNote?: StringNullableWithAggregatesFilter<"DisbursementDraftVersion"> | string | null
     changedBy?: StringWithAggregatesFilter<"DisbursementDraftVersion"> | string
     createdAt?: DateTimeWithAggregatesFilter<"DisbursementDraftVersion"> | Date | string
+  }
+
+  export type MultisigProposalWhereInput = {
+    AND?: MultisigProposalWhereInput | MultisigProposalWhereInput[]
+    OR?: MultisigProposalWhereInput[]
+    NOT?: MultisigProposalWhereInput | MultisigProposalWhereInput[]
+    id?: StringFilter<"MultisigProposal"> | string
+    proposalId?: StringFilter<"MultisigProposal"> | string
+    organizationId?: StringFilter<"MultisigProposal"> | string
+    transactionXdr?: StringFilter<"MultisigProposal"> | string
+    signatures?: JsonFilter<"MultisigProposal">
+    requiredSigners?: IntFilter<"MultisigProposal"> | number
+    status?: StringFilter<"MultisigProposal"> | string
+    submittedTxHash?: StringNullableFilter<"MultisigProposal"> | string | null
+    errorMessage?: StringNullableFilter<"MultisigProposal"> | string | null
+    createdAt?: DateTimeFilter<"MultisigProposal"> | Date | string
+    updatedAt?: DateTimeFilter<"MultisigProposal"> | Date | string
+    expiresAt?: DateTimeFilter<"MultisigProposal"> | Date | string
+  }
+
+  export type MultisigProposalOrderByWithRelationInput = {
+    id?: SortOrder
+    proposalId?: SortOrder
+    organizationId?: SortOrder
+    transactionXdr?: SortOrder
+    signatures?: SortOrder
+    requiredSigners?: SortOrder
+    status?: SortOrder
+    submittedTxHash?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    expiresAt?: SortOrder
+  }
+
+  export type MultisigProposalWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    proposalId?: string
+    AND?: MultisigProposalWhereInput | MultisigProposalWhereInput[]
+    OR?: MultisigProposalWhereInput[]
+    NOT?: MultisigProposalWhereInput | MultisigProposalWhereInput[]
+    organizationId?: StringFilter<"MultisigProposal"> | string
+    transactionXdr?: StringFilter<"MultisigProposal"> | string
+    signatures?: JsonFilter<"MultisigProposal">
+    requiredSigners?: IntFilter<"MultisigProposal"> | number
+    status?: StringFilter<"MultisigProposal"> | string
+    submittedTxHash?: StringNullableFilter<"MultisigProposal"> | string | null
+    errorMessage?: StringNullableFilter<"MultisigProposal"> | string | null
+    createdAt?: DateTimeFilter<"MultisigProposal"> | Date | string
+    updatedAt?: DateTimeFilter<"MultisigProposal"> | Date | string
+    expiresAt?: DateTimeFilter<"MultisigProposal"> | Date | string
+  }, "id" | "proposalId">
+
+  export type MultisigProposalOrderByWithAggregationInput = {
+    id?: SortOrder
+    proposalId?: SortOrder
+    organizationId?: SortOrder
+    transactionXdr?: SortOrder
+    signatures?: SortOrder
+    requiredSigners?: SortOrder
+    status?: SortOrder
+    submittedTxHash?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    expiresAt?: SortOrder
+    _count?: MultisigProposalCountOrderByAggregateInput
+    _avg?: MultisigProposalAvgOrderByAggregateInput
+    _max?: MultisigProposalMaxOrderByAggregateInput
+    _min?: MultisigProposalMinOrderByAggregateInput
+    _sum?: MultisigProposalSumOrderByAggregateInput
+  }
+
+  export type MultisigProposalScalarWhereWithAggregatesInput = {
+    AND?: MultisigProposalScalarWhereWithAggregatesInput | MultisigProposalScalarWhereWithAggregatesInput[]
+    OR?: MultisigProposalScalarWhereWithAggregatesInput[]
+    NOT?: MultisigProposalScalarWhereWithAggregatesInput | MultisigProposalScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MultisigProposal"> | string
+    proposalId?: StringWithAggregatesFilter<"MultisigProposal"> | string
+    organizationId?: StringWithAggregatesFilter<"MultisigProposal"> | string
+    transactionXdr?: StringWithAggregatesFilter<"MultisigProposal"> | string
+    signatures?: JsonWithAggregatesFilter<"MultisigProposal">
+    requiredSigners?: IntWithAggregatesFilter<"MultisigProposal"> | number
+    status?: StringWithAggregatesFilter<"MultisigProposal"> | string
+    submittedTxHash?: StringNullableWithAggregatesFilter<"MultisigProposal"> | string | null
+    errorMessage?: StringNullableWithAggregatesFilter<"MultisigProposal"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MultisigProposal"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MultisigProposal"> | Date | string
+    expiresAt?: DateTimeWithAggregatesFilter<"MultisigProposal"> | Date | string
+  }
+
+  export type CachedAssetWhereInput = {
+    AND?: CachedAssetWhereInput | CachedAssetWhereInput[]
+    OR?: CachedAssetWhereInput[]
+    NOT?: CachedAssetWhereInput | CachedAssetWhereInput[]
+    id?: StringFilter<"CachedAsset"> | string
+    tokenAddress?: StringFilter<"CachedAsset"> | string
+    code?: StringFilter<"CachedAsset"> | string
+    issuer?: StringFilter<"CachedAsset"> | string
+    name?: StringNullableFilter<"CachedAsset"> | string | null
+    description?: StringNullableFilter<"CachedAsset"> | string | null
+    imageUrl?: StringNullableFilter<"CachedAsset"> | string | null
+    isVerified?: BoolFilter<"CachedAsset"> | boolean
+    decimals?: IntFilter<"CachedAsset"> | number
+    lastSyncedAt?: DateTimeFilter<"CachedAsset"> | Date | string
+    createdAt?: DateTimeFilter<"CachedAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"CachedAsset"> | Date | string
+  }
+
+  export type CachedAssetOrderByWithRelationInput = {
+    id?: SortOrder
+    tokenAddress?: SortOrder
+    code?: SortOrder
+    issuer?: SortOrder
+    name?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    isVerified?: SortOrder
+    decimals?: SortOrder
+    lastSyncedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CachedAssetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tokenAddress?: string
+    AND?: CachedAssetWhereInput | CachedAssetWhereInput[]
+    OR?: CachedAssetWhereInput[]
+    NOT?: CachedAssetWhereInput | CachedAssetWhereInput[]
+    code?: StringFilter<"CachedAsset"> | string
+    issuer?: StringFilter<"CachedAsset"> | string
+    name?: StringNullableFilter<"CachedAsset"> | string | null
+    description?: StringNullableFilter<"CachedAsset"> | string | null
+    imageUrl?: StringNullableFilter<"CachedAsset"> | string | null
+    isVerified?: BoolFilter<"CachedAsset"> | boolean
+    decimals?: IntFilter<"CachedAsset"> | number
+    lastSyncedAt?: DateTimeFilter<"CachedAsset"> | Date | string
+    createdAt?: DateTimeFilter<"CachedAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"CachedAsset"> | Date | string
+  }, "id" | "tokenAddress">
+
+  export type CachedAssetOrderByWithAggregationInput = {
+    id?: SortOrder
+    tokenAddress?: SortOrder
+    code?: SortOrder
+    issuer?: SortOrder
+    name?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    isVerified?: SortOrder
+    decimals?: SortOrder
+    lastSyncedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CachedAssetCountOrderByAggregateInput
+    _avg?: CachedAssetAvgOrderByAggregateInput
+    _max?: CachedAssetMaxOrderByAggregateInput
+    _min?: CachedAssetMinOrderByAggregateInput
+    _sum?: CachedAssetSumOrderByAggregateInput
+  }
+
+  export type CachedAssetScalarWhereWithAggregatesInput = {
+    AND?: CachedAssetScalarWhereWithAggregatesInput | CachedAssetScalarWhereWithAggregatesInput[]
+    OR?: CachedAssetScalarWhereWithAggregatesInput[]
+    NOT?: CachedAssetScalarWhereWithAggregatesInput | CachedAssetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CachedAsset"> | string
+    tokenAddress?: StringWithAggregatesFilter<"CachedAsset"> | string
+    code?: StringWithAggregatesFilter<"CachedAsset"> | string
+    issuer?: StringWithAggregatesFilter<"CachedAsset"> | string
+    name?: StringNullableWithAggregatesFilter<"CachedAsset"> | string | null
+    description?: StringNullableWithAggregatesFilter<"CachedAsset"> | string | null
+    imageUrl?: StringNullableWithAggregatesFilter<"CachedAsset"> | string | null
+    isVerified?: BoolWithAggregatesFilter<"CachedAsset"> | boolean
+    decimals?: IntWithAggregatesFilter<"CachedAsset"> | number
+    lastSyncedAt?: DateTimeWithAggregatesFilter<"CachedAsset"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"CachedAsset"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CachedAsset"> | Date | string
+  }
+
+  export type SplitLinkWhereInput = {
+    AND?: SplitLinkWhereInput | SplitLinkWhereInput[]
+    OR?: SplitLinkWhereInput[]
+    NOT?: SplitLinkWhereInput | SplitLinkWhereInput[]
+    id?: StringFilter<"SplitLink"> | string
+    slug?: StringFilter<"SplitLink"> | string
+    fullUrl?: StringFilter<"SplitLink"> | string
+    payloadHash?: StringFilter<"SplitLink"> | string
+    creatorAddress?: StringFilter<"SplitLink"> | string
+    clickCount?: IntFilter<"SplitLink"> | number
+    lastClickedAt?: DateTimeNullableFilter<"SplitLink"> | Date | string | null
+    expiresAt?: DateTimeNullableFilter<"SplitLink"> | Date | string | null
+    createdAt?: DateTimeFilter<"SplitLink"> | Date | string
+  }
+
+  export type SplitLinkOrderByWithRelationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    fullUrl?: SortOrder
+    payloadHash?: SortOrder
+    creatorAddress?: SortOrder
+    clickCount?: SortOrder
+    lastClickedAt?: SortOrderInput | SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SplitLinkWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    slug?: string
+    payloadHash?: string
+    AND?: SplitLinkWhereInput | SplitLinkWhereInput[]
+    OR?: SplitLinkWhereInput[]
+    NOT?: SplitLinkWhereInput | SplitLinkWhereInput[]
+    fullUrl?: StringFilter<"SplitLink"> | string
+    creatorAddress?: StringFilter<"SplitLink"> | string
+    clickCount?: IntFilter<"SplitLink"> | number
+    lastClickedAt?: DateTimeNullableFilter<"SplitLink"> | Date | string | null
+    expiresAt?: DateTimeNullableFilter<"SplitLink"> | Date | string | null
+    createdAt?: DateTimeFilter<"SplitLink"> | Date | string
+  }, "id" | "slug" | "payloadHash">
+
+  export type SplitLinkOrderByWithAggregationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    fullUrl?: SortOrder
+    payloadHash?: SortOrder
+    creatorAddress?: SortOrder
+    clickCount?: SortOrder
+    lastClickedAt?: SortOrderInput | SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: SplitLinkCountOrderByAggregateInput
+    _avg?: SplitLinkAvgOrderByAggregateInput
+    _max?: SplitLinkMaxOrderByAggregateInput
+    _min?: SplitLinkMinOrderByAggregateInput
+    _sum?: SplitLinkSumOrderByAggregateInput
+  }
+
+  export type SplitLinkScalarWhereWithAggregatesInput = {
+    AND?: SplitLinkScalarWhereWithAggregatesInput | SplitLinkScalarWhereWithAggregatesInput[]
+    OR?: SplitLinkScalarWhereWithAggregatesInput[]
+    NOT?: SplitLinkScalarWhereWithAggregatesInput | SplitLinkScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SplitLink"> | string
+    slug?: StringWithAggregatesFilter<"SplitLink"> | string
+    fullUrl?: StringWithAggregatesFilter<"SplitLink"> | string
+    payloadHash?: StringWithAggregatesFilter<"SplitLink"> | string
+    creatorAddress?: StringWithAggregatesFilter<"SplitLink"> | string
+    clickCount?: IntWithAggregatesFilter<"SplitLink"> | number
+    lastClickedAt?: DateTimeNullableWithAggregatesFilter<"SplitLink"> | Date | string | null
+    expiresAt?: DateTimeNullableWithAggregatesFilter<"SplitLink"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SplitLink"> | Date | string
   }
 
   export type StreamCreateInput = {
@@ -40434,6 +43943,300 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MultisigProposalCreateInput = {
+    id?: string
+    proposalId: string
+    organizationId: string
+    transactionXdr: string
+    signatures?: JsonNullValueInput | InputJsonValue
+    requiredSigners: number
+    status?: string
+    submittedTxHash?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiresAt: Date | string
+  }
+
+  export type MultisigProposalUncheckedCreateInput = {
+    id?: string
+    proposalId: string
+    organizationId: string
+    transactionXdr: string
+    signatures?: JsonNullValueInput | InputJsonValue
+    requiredSigners: number
+    status?: string
+    submittedTxHash?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiresAt: Date | string
+  }
+
+  export type MultisigProposalUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proposalId?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    transactionXdr?: StringFieldUpdateOperationsInput | string
+    signatures?: JsonNullValueInput | InputJsonValue
+    requiredSigners?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    submittedTxHash?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MultisigProposalUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proposalId?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    transactionXdr?: StringFieldUpdateOperationsInput | string
+    signatures?: JsonNullValueInput | InputJsonValue
+    requiredSigners?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    submittedTxHash?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MultisigProposalCreateManyInput = {
+    id?: string
+    proposalId: string
+    organizationId: string
+    transactionXdr: string
+    signatures?: JsonNullValueInput | InputJsonValue
+    requiredSigners: number
+    status?: string
+    submittedTxHash?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiresAt: Date | string
+  }
+
+  export type MultisigProposalUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proposalId?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    transactionXdr?: StringFieldUpdateOperationsInput | string
+    signatures?: JsonNullValueInput | InputJsonValue
+    requiredSigners?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    submittedTxHash?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MultisigProposalUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proposalId?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    transactionXdr?: StringFieldUpdateOperationsInput | string
+    signatures?: JsonNullValueInput | InputJsonValue
+    requiredSigners?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    submittedTxHash?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CachedAssetCreateInput = {
+    id?: string
+    tokenAddress: string
+    code: string
+    issuer: string
+    name?: string | null
+    description?: string | null
+    imageUrl?: string | null
+    isVerified?: boolean
+    decimals?: number
+    lastSyncedAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CachedAssetUncheckedCreateInput = {
+    id?: string
+    tokenAddress: string
+    code: string
+    issuer: string
+    name?: string | null
+    description?: string | null
+    imageUrl?: string | null
+    isVerified?: boolean
+    decimals?: number
+    lastSyncedAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CachedAssetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tokenAddress?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    issuer?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    decimals?: IntFieldUpdateOperationsInput | number
+    lastSyncedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CachedAssetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tokenAddress?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    issuer?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    decimals?: IntFieldUpdateOperationsInput | number
+    lastSyncedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CachedAssetCreateManyInput = {
+    id?: string
+    tokenAddress: string
+    code: string
+    issuer: string
+    name?: string | null
+    description?: string | null
+    imageUrl?: string | null
+    isVerified?: boolean
+    decimals?: number
+    lastSyncedAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CachedAssetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tokenAddress?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    issuer?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    decimals?: IntFieldUpdateOperationsInput | number
+    lastSyncedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CachedAssetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tokenAddress?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    issuer?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    decimals?: IntFieldUpdateOperationsInput | number
+    lastSyncedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SplitLinkCreateInput = {
+    id?: string
+    slug: string
+    fullUrl: string
+    payloadHash: string
+    creatorAddress: string
+    clickCount?: number
+    lastClickedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SplitLinkUncheckedCreateInput = {
+    id?: string
+    slug: string
+    fullUrl: string
+    payloadHash: string
+    creatorAddress: string
+    clickCount?: number
+    lastClickedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SplitLinkUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    fullUrl?: StringFieldUpdateOperationsInput | string
+    payloadHash?: StringFieldUpdateOperationsInput | string
+    creatorAddress?: StringFieldUpdateOperationsInput | string
+    clickCount?: IntFieldUpdateOperationsInput | number
+    lastClickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SplitLinkUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    fullUrl?: StringFieldUpdateOperationsInput | string
+    payloadHash?: StringFieldUpdateOperationsInput | string
+    creatorAddress?: StringFieldUpdateOperationsInput | string
+    clickCount?: IntFieldUpdateOperationsInput | number
+    lastClickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SplitLinkCreateManyInput = {
+    id?: string
+    slug: string
+    fullUrl: string
+    payloadHash: string
+    creatorAddress: string
+    clickCount?: number
+    lastClickedAt?: Date | string | null
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SplitLinkUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    fullUrl?: StringFieldUpdateOperationsInput | string
+    payloadHash?: StringFieldUpdateOperationsInput | string
+    creatorAddress?: StringFieldUpdateOperationsInput | string
+    clickCount?: IntFieldUpdateOperationsInput | number
+    lastClickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SplitLinkUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    fullUrl?: StringFieldUpdateOperationsInput | string
+    payloadHash?: StringFieldUpdateOperationsInput | string
+    creatorAddress?: StringFieldUpdateOperationsInput | string
+    clickCount?: IntFieldUpdateOperationsInput | number
+    lastClickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -42324,6 +46127,154 @@ export namespace Prisma {
     version?: SortOrder
   }
 
+  export type MultisigProposalCountOrderByAggregateInput = {
+    id?: SortOrder
+    proposalId?: SortOrder
+    organizationId?: SortOrder
+    transactionXdr?: SortOrder
+    signatures?: SortOrder
+    requiredSigners?: SortOrder
+    status?: SortOrder
+    submittedTxHash?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    expiresAt?: SortOrder
+  }
+
+  export type MultisigProposalAvgOrderByAggregateInput = {
+    requiredSigners?: SortOrder
+  }
+
+  export type MultisigProposalMaxOrderByAggregateInput = {
+    id?: SortOrder
+    proposalId?: SortOrder
+    organizationId?: SortOrder
+    transactionXdr?: SortOrder
+    requiredSigners?: SortOrder
+    status?: SortOrder
+    submittedTxHash?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    expiresAt?: SortOrder
+  }
+
+  export type MultisigProposalMinOrderByAggregateInput = {
+    id?: SortOrder
+    proposalId?: SortOrder
+    organizationId?: SortOrder
+    transactionXdr?: SortOrder
+    requiredSigners?: SortOrder
+    status?: SortOrder
+    submittedTxHash?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    expiresAt?: SortOrder
+  }
+
+  export type MultisigProposalSumOrderByAggregateInput = {
+    requiredSigners?: SortOrder
+  }
+
+  export type CachedAssetCountOrderByAggregateInput = {
+    id?: SortOrder
+    tokenAddress?: SortOrder
+    code?: SortOrder
+    issuer?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    imageUrl?: SortOrder
+    isVerified?: SortOrder
+    decimals?: SortOrder
+    lastSyncedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CachedAssetAvgOrderByAggregateInput = {
+    decimals?: SortOrder
+  }
+
+  export type CachedAssetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tokenAddress?: SortOrder
+    code?: SortOrder
+    issuer?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    imageUrl?: SortOrder
+    isVerified?: SortOrder
+    decimals?: SortOrder
+    lastSyncedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CachedAssetMinOrderByAggregateInput = {
+    id?: SortOrder
+    tokenAddress?: SortOrder
+    code?: SortOrder
+    issuer?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    imageUrl?: SortOrder
+    isVerified?: SortOrder
+    decimals?: SortOrder
+    lastSyncedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CachedAssetSumOrderByAggregateInput = {
+    decimals?: SortOrder
+  }
+
+  export type SplitLinkCountOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    fullUrl?: SortOrder
+    payloadHash?: SortOrder
+    creatorAddress?: SortOrder
+    clickCount?: SortOrder
+    lastClickedAt?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SplitLinkAvgOrderByAggregateInput = {
+    clickCount?: SortOrder
+  }
+
+  export type SplitLinkMaxOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    fullUrl?: SortOrder
+    payloadHash?: SortOrder
+    creatorAddress?: SortOrder
+    clickCount?: SortOrder
+    lastClickedAt?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SplitLinkMinOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    fullUrl?: SortOrder
+    payloadHash?: SortOrder
+    creatorAddress?: SortOrder
+    clickCount?: SortOrder
+    lastClickedAt?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SplitLinkSumOrderByAggregateInput = {
+    clickCount?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -43338,6 +47289,18 @@ export namespace Prisma {
      * @deprecated Use DisbursementDraftVersionDefaultArgs instead
      */
     export type DisbursementDraftVersionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DisbursementDraftVersionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use MultisigProposalDefaultArgs instead
+     */
+    export type MultisigProposalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MultisigProposalDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use CachedAssetDefaultArgs instead
+     */
+    export type CachedAssetArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CachedAssetDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use SplitLinkDefaultArgs instead
+     */
+    export type SplitLinkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SplitLinkDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

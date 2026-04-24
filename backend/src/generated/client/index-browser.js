@@ -518,6 +518,48 @@ exports.Prisma.DisbursementDraftVersionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.MultisigProposalScalarFieldEnum = {
+  id: 'id',
+  proposalId: 'proposalId',
+  organizationId: 'organizationId',
+  transactionXdr: 'transactionXdr',
+  signatures: 'signatures',
+  requiredSigners: 'requiredSigners',
+  status: 'status',
+  submittedTxHash: 'submittedTxHash',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  expiresAt: 'expiresAt'
+};
+
+exports.Prisma.CachedAssetScalarFieldEnum = {
+  id: 'id',
+  tokenAddress: 'tokenAddress',
+  code: 'code',
+  issuer: 'issuer',
+  name: 'name',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  isVerified: 'isVerified',
+  decimals: 'decimals',
+  lastSyncedAt: 'lastSyncedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SplitLinkScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  fullUrl: 'fullUrl',
+  payloadHash: 'payloadHash',
+  creatorAddress: 'creatorAddress',
+  clickCount: 'clickCount',
+  lastClickedAt: 'lastClickedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -599,7 +641,10 @@ exports.Prisma.ModelName = {
   SplitLog: 'SplitLog',
   MonitoredTransaction: 'MonitoredTransaction',
   DisbursementDraft: 'DisbursementDraft',
-  DisbursementDraftVersion: 'DisbursementDraftVersion'
+  DisbursementDraftVersion: 'DisbursementDraftVersion',
+  MultisigProposal: 'MultisigProposal',
+  CachedAsset: 'CachedAsset',
+  SplitLink: 'SplitLink'
 };
 
 /**
