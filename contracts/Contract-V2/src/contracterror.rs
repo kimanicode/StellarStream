@@ -136,4 +136,9 @@ pub enum Error {
     RecoveryAlreadyApproved = 74,
     /// Not enough council signatures to execute recovery
     RecoveryInsufficientSignatures = 75,
+    // -- BPS Math Engine (Issue #912) -------------------------------------------
+    /// BPS value exceeds 10000 (must be 0-10000)
+    InvalidBpsValue = 76,
+    /// Sum of BPS values does not equal 10000
+    BpsSumMismatch = 77,
 }

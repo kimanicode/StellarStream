@@ -5,8 +5,10 @@ use soroban_sdk::{
 };
 
 mod errors;
+mod events;
 mod storage;
 use errors::Error;
+use events::{emit_individual_payment, emit_split_executed};
 use storage::DataKey;
 
 #[cfg(test)]
@@ -48,11 +50,51 @@ pub enum AdminAction {
     UpdateCollector(Address),
 }
 
+// ── #914: Multi-asset split types ────────────────────────────────────────────
+
+/// A single asset group for `split_multi_asset`: one SAC token address paired
+/// with its recipient list. Each group is processed atomically within the call.
+#[contracttype]
+#[derive(Clone)]
+pub struct AssetGroup {
+    /// The Stellar Asset Contract (SAC) token address for this group.
+    pub asset_address: Address,
+    /// Recipients and their share in basis points (must sum to 10_000 per group).
+    pub recipients: Vec<Recipient>,
+    /// Total amount of `asset_address` to disburse across `recipients`.
+    pub total_amount: i128,
+}
+
 #[contracttype]
 #[derive(Clone)]
 pub struct Proposal {
     pub action: AdminAction,
     pub approvals: Vec<Address>,
+    pub executed: bool,
+}
+
+// ── #916: Sensitive admin change proposal types ───────────────────────────────
+
+/// Actions that require multi-sig quorum approval before execution.
+/// Covers fee-wallet changes, contract upgrades, and pause/unpause.
+#[contracttype]
+#[derive(Clone, PartialEq)]
+pub enum AdminChangeAction {
+    /// Update the protocol fee-wallet address.
+    UpdateFeeWallet(Address),
+    /// Upgrade the contract WASM to a new hash (with migration version guard).
+    UpgradeWasm(soroban_sdk::BytesN<32>, u32),
+    /// Set the circuit-breaker state (Active or Paused).
+    SetContractState(ContractState),
+}
+
+/// Pending multi-sig proposal for a sensitive admin action.
+#[contracttype]
+#[derive(Clone)]
+pub struct AdminProposal {
+    pub action: AdminChangeAction,
+    pub approvals: Vec<Address>,
+    pub threshold: u32,
     pub executed: bool,
 }
 
@@ -70,7 +112,8 @@ pub struct SplitConfig {
     pub sender: Address,
     pub recipients: Vec<Recipient>,
     pub total_amount: i128,
-    pub release_time: u64,
+    /// Ledger timestamp after which the split can be executed (#915).
+    pub release_ledger: u64,
     pub status: SplitStatus,
 }
 
@@ -158,6 +201,18 @@ impl SplitterV3 {
         env.storage()
             .instance()
             .set(&DataKey::ContractState, &ContractState::Active);
+        // #916: default admin threshold = majority of quorum_admins (at least 2)
+        let threshold: u32 = if quorum_admins.len() >= 2 {
+            (quorum_admins.len() / 2 + 1) as u32
+        } else {
+            1
+        };
+        env.storage()
+            .instance()
+            .set(&DataKey::AdminThreshold, &threshold);
+        env.storage()
+            .instance()
+            .set(&DataKey::NextAdminProposalId, &0u64);
         Self::_set_verified(&env, &owner, true);
         for addr in quorum_admins.iter() {
             Self::_set_verified(&env, &addr, true);
@@ -167,22 +222,28 @@ impl SplitterV3 {
 
     // ── #911: Protocol-level init (fee wallet + version constants) ────────────
 
-    /// Stores protocol-level constants: fee wallet address and contract version.
-    /// Can only be called once (guarded by Admin key existence).
-    /// Separate from `initialize` so protocol constants can be set independently.
-    pub fn init(env: Env, fee_wallet: Address, version: u32) -> Result<(), Error> {
+    /// Update the fee wallet address. Requires a passed admin proposal (#916).
+    /// Use `propose_admin_change` + `approve_admin_change` to create and approve
+    /// an `UpdateFeeWallet` proposal, then call this with the proposal_id.
+    pub fn init(env: Env, caller: Address, proposal_id: u64, version: u32) -> Result<(), Error> {
         if !env.storage().instance().has(&DataKey::Admin) {
             return Err(Error::NotAdmin);
         }
-        Self::_require_admin(&env)?;
-        env.storage()
-            .instance()
-            .set(&DataKey::FeeWallet, &fee_wallet);
-        env.storage()
-            .instance()
-            .set(&DataKey::ProtocolVersion, &version);
-        Self::_bump_instance_ttl(&env);
-        Ok(())
+        caller.require_auth();
+        let action = Self::_consume_admin_proposal(&env, &caller, proposal_id,
+            |action| matches!(action, AdminChangeAction::UpdateFeeWallet(_)))?;
+        if let AdminChangeAction::UpdateFeeWallet(fee_wallet) = action {
+            env.storage()
+                .instance()
+                .set(&DataKey::FeeWallet, &fee_wallet);
+            env.storage()
+                .instance()
+                .set(&DataKey::ProtocolVersion, &version);
+            Self::_bump_instance_ttl(&env);
+            Ok(())
+        } else {
+            Err(Error::NotAuthorizedAdmin)
+        }
     }
 
     /// View the stored protocol version.
@@ -198,44 +259,150 @@ impl SplitterV3 {
         env.storage().instance().get(&DataKey::FeeWallet)
     }
 
-    // ── #922: Circuit-breaker ─────────────────────────────────────────────────
+    // ── #916: Multi-sig admin change proposals ────────────────────────────────
 
-    pub fn set_contract_state(env: Env, state: ContractState) -> Result<(), Error> {
-        Self::_require_admin(&env)?;
+    /// Propose a sensitive admin action (fee wallet change, upgrade, or pause).
+    /// The caller must be a quorum admin. The proposal is created with the
+    /// caller's approval already counted. Returns the new proposal ID.
+    pub fn propose_admin_change(
+        env: Env,
+        caller: Address,
+        action: AdminChangeAction,
+    ) -> Result<u64, Error> {
+        caller.require_auth();
+        Self::_require_quorum_admin(&env, &caller)?;
+
+        let id: u64 = env
+            .storage()
+            .instance()
+            .get(&DataKey::NextAdminProposalId)
+            .unwrap_or(0);
+        let threshold: u32 = env
+            .storage()
+            .instance()
+            .get(&DataKey::AdminThreshold)
+            .unwrap_or(2);
+        let mut approvals: Vec<Address> = Vec::new(&env);
+        approvals.push_back(caller.clone());
+
+        let proposal = AdminProposal {
+            action,
+            approvals,
+            threshold,
+            executed: false,
+        };
+        env.storage()
+            .persistent()
+            .set(&DataKey::AdminProposal(id), &proposal);
         env.storage()
             .instance()
-            .set(&DataKey::ContractState, &state);
+            .set(&DataKey::NextAdminProposalId, &(id + 1));
+        Self::_bump_persistent_ttl(&env, &DataKey::AdminProposal(id));
         Self::_bump_instance_ttl(&env);
+
+        env.events()
+            .publish((symbol_short!("admprop"), caller), id);
+        Ok(id)
+    }
+
+    /// Approve a pending admin change proposal. Once approvals reach the
+    /// threshold the proposal is ready to be executed via the gated function.
+    pub fn approve_admin_change(
+        env: Env,
+        caller: Address,
+        proposal_id: u64,
+    ) -> Result<(), Error> {
+        caller.require_auth();
+        Self::_require_quorum_admin(&env, &caller)?;
+
+        let mut proposal: AdminProposal = env
+            .storage()
+            .persistent()
+            .get(&DataKey::AdminProposal(proposal_id))
+            .ok_or(Error::ProposalNotFound)?;
+
+        if proposal.executed {
+            return Err(Error::AlreadyExecuted);
+        }
+        for existing in proposal.approvals.iter() {
+            if existing == caller {
+                return Err(Error::AlreadyApproved);
+            }
+        }
+        proposal.approvals.push_back(caller.clone());
+        env.storage()
+            .persistent()
+            .set(&DataKey::AdminProposal(proposal_id), &proposal);
+        Self::_bump_persistent_ttl(&env, &DataKey::AdminProposal(proposal_id));
+
+        env.events()
+            .publish((symbol_short!("admapprv"), caller), proposal_id);
         Ok(())
+    }
+
+    /// View a pending admin change proposal.
+    pub fn get_admin_proposal(env: Env, proposal_id: u64) -> Option<AdminProposal> {
+        env.storage()
+            .persistent()
+            .get(&DataKey::AdminProposal(proposal_id))
+    }
+
+    /// View the current admin threshold.
+    pub fn admin_threshold(env: Env) -> u32 {
+        env.storage()
+            .instance()
+            .get(&DataKey::AdminThreshold)
+            .unwrap_or(2)
+    }
+
+    // ── #922: Circuit-breaker ─────────────────────────────────────────────────
+
+    /// Pause or unpause the contract. Requires a passed admin proposal (#916).
+    /// Use `propose_admin_change` + `approve_admin_change` to create and approve
+    /// a `SetContractState` proposal, then call this with the proposal_id.
+    pub fn set_contract_state(env: Env, caller: Address, proposal_id: u64) -> Result<(), Error> {
+        caller.require_auth();
+        let new_state = Self::_consume_admin_proposal(&env, &caller, proposal_id,
+            |action| matches!(action, AdminChangeAction::SetContractState(_)))?;
+        if let AdminChangeAction::SetContractState(state) = new_state {
+            env.storage()
+                .instance()
+                .set(&DataKey::ContractState, &state);
+            Self::_bump_instance_ttl(&env);
+            env.events()
+                .publish((symbol_short!("setstate"), proposal_id), ());
+            Ok(())
+        } else {
+            Err(Error::NotAuthorizedAdmin)
+        }
     }
 
     // ── #924: WASM upgrade with migration version guard ───────────────────────
 
-    /// Upgrade the contract WASM. Gated by the admin quorum.
-    /// Stores a `MigrationVersion` so the same migration cannot run twice.
-    pub fn upgrade(
-        env: Env,
-        new_wasm_hash: BytesN<32>,
-        migration_version: u32,
-    ) -> Result<(), Error> {
-        Self::_require_admin(&env)?;
-
-        let current_version: u32 = env
-            .storage()
-            .instance()
-            .get(&DataKey::MigrationVersion)
-            .unwrap_or(0);
-
-        if migration_version <= current_version {
-            return Err(Error::MigrationAlreadyApplied);
+    /// Upgrade the contract WASM. Requires a passed admin proposal (#916).
+    /// Use `propose_admin_change` + `approve_admin_change` to create and approve
+    /// an `UpgradeWasm` proposal, then call this with the proposal_id.
+    pub fn upgrade(env: Env, caller: Address, proposal_id: u64) -> Result<(), Error> {
+        caller.require_auth();
+        let action = Self::_consume_admin_proposal(&env, &caller, proposal_id,
+            |action| matches!(action, AdminChangeAction::UpgradeWasm(_, _)))?;
+        if let AdminChangeAction::UpgradeWasm(new_wasm_hash, migration_version) = action {
+            let current_version: u32 = env
+                .storage()
+                .instance()
+                .get(&DataKey::MigrationVersion)
+                .unwrap_or(0);
+            if migration_version <= current_version {
+                return Err(Error::MigrationAlreadyApplied);
+            }
+            env.storage()
+                .instance()
+                .set(&DataKey::MigrationVersion, &migration_version);
+            env.deployer().update_current_contract_wasm(new_wasm_hash);
+            Ok(())
+        } else {
+            Err(Error::NotAuthorizedAdmin)
         }
-
-        env.storage()
-            .instance()
-            .set(&DataKey::MigrationVersion, &migration_version);
-
-        env.deployer().update_current_contract_wasm(new_wasm_hash);
-        Ok(())
     }
 
     // ── #927: Whitelist management ────────────────────────────────────────────
@@ -529,6 +696,7 @@ impl SplitterV3 {
             Self::_distribute(
                 &env,
                 &token_client,
+                &token_addr,
                 &contract_addr,
                 &recipients,
                 distributable,
@@ -558,7 +726,7 @@ impl SplitterV3 {
                     share_bps: new_bps,
                 });
             }
-            Self::_distribute(&env, &token_client, &contract_addr, &scaled, distributable)?;
+            Self::_distribute(&env, &token_client, &token_addr, &contract_addr, &scaled, distributable)?;
         }
 
         // ── Mark hash as processed (temporary storage, TTL ~1 day) ───────────
@@ -576,7 +744,7 @@ impl SplitterV3 {
         sender: Address,
         recipients: Vec<Recipient>,
         total_amount: i128,
-        release_time: u64,
+        release_ledger: u64,
     ) -> Result<u64, Error> {
         Self::_require_not_paused(&env)?;
         sender.require_auth();
@@ -605,7 +773,7 @@ impl SplitterV3 {
             sender,
             recipients,
             total_amount,
-            release_time,
+            release_ledger,
             status: SplitStatus::Pending,
         };
         env.storage()
@@ -614,7 +782,7 @@ impl SplitterV3 {
         Self::_bump_persistent_ttl(&env, &DataKey::ScheduledSplit(split_id));
 
         env.events()
-            .publish((symbol_short!("sched"), split_id), release_time);
+            .publish((symbol_short!("sched"), split_id), release_ledger);
 
         Ok(split_id)
     }
@@ -631,7 +799,8 @@ impl SplitterV3 {
             SplitStatus::Executed => return Err(Error::SplitAlreadyExecuted),
             SplitStatus::Pending => {}
         }
-        if env.ledger().timestamp() < config.release_time {
+        // #915: funds cannot be released until release_ledger timestamp is reached.
+        if env.ledger().timestamp() < config.release_ledger {
             return Err(Error::NotYetReleased);
         }
         let token_addr: Address = env.storage().instance().get(&DataKey::Token).unwrap();
@@ -659,6 +828,7 @@ impl SplitterV3 {
         Self::_distribute(
             &env,
             &token_client,
+            &token_addr,
             &contract_addr,
             &config.recipients,
             distributable,
@@ -670,6 +840,8 @@ impl SplitterV3 {
         Ok(())
     }
 
+    /// #915: Cancel a time-locked split. Only the owner (sender) can cancel,
+    /// and only before the release_ledger timestamp is reached.
     pub fn cancel_split(env: Env, caller: Address, split_id: u64) -> Result<(), Error> {
         caller.require_auth();
         let mut config: SplitConfig = env
@@ -685,7 +857,8 @@ impl SplitterV3 {
             SplitStatus::Executed => return Err(Error::SplitAlreadyExecuted),
             SplitStatus::Pending => {}
         }
-        if env.ledger().timestamp() >= config.release_time {
+        // #915: cancellation is only allowed before the release_ledger timestamp.
+        if env.ledger().timestamp() >= config.release_ledger {
             return Err(Error::SplitNotYetDue);
         }
         let token_addr: Address = env.storage().instance().get(&DataKey::Token).unwrap();
@@ -883,6 +1056,18 @@ impl SplitterV3 {
             }
         }
 
+        // #926: use try_transfer — panic on any failure to trigger atomic rollback.
+        for r in recipients.iter() {
+            let amount = total_amount
+                .checked_mul(r.share_bps as i128)
+                .ok_or(Error::Overflow)?
+                / 10_000;
+            if amount > 0 {
+                let _ = token_client
+                    .try_transfer(&contract_addr, &r.address, &amount)
+                    .map_err(|_| Error::TransferFailed)?;
+                // #921: emit per-recipient payment event
+                emit_individual_payment(&env, &r.address, &asset, amount, r.share_bps);
         // Pull funds from sender into contract first.
         let _ = token_client
             .try_transfer(&sender, &contract_addr, &total_amount)
@@ -917,8 +1102,89 @@ impl SplitterV3 {
             }
         }
 
+<<<<<<< feature/issue-913-reentrancy-guard
         // #913: release reentrancy lock after all external calls complete.
         Self::_unlock(&env);
+=======
+        // #921: emit top-level split executed event after successful transfer loop
+        emit_split_executed(&env, &sender, total_amount);
+
+        Ok(())
+    }
+
+    // ── #914: Multi-asset split ───────────────────────────────────────────────
+
+    /// Disburse multiple SAC tokens to their respective recipient lists in a
+    /// single transaction. Each `AssetGroup` is validated independently:
+    /// - `asset_address` must implement the Stellar token interface (pre-flight check)
+    /// - `recipients` bps must sum to 10_000
+    /// - `total_amount` must be positive
+    ///
+    /// All groups are processed atomically; if any transfer fails the whole tx reverts.
+    pub fn split_multi_asset(
+        env: Env,
+        sender: Address,
+        groups: Vec<AssetGroup>,
+    ) -> Result<(), Error> {
+        Self::_require_not_paused(&env)?;
+        sender.require_auth();
+
+        if groups.is_empty() {
+            return Err(Error::EmptyRecipients);
+        }
+
+        // ── Pre-flight: validate every group before any state change ──────────
+        for group in groups.iter() {
+            if group.total_amount <= 0 {
+                return Err(Error::InsufficientFunds);
+            }
+            // Verify asset_address implements TokenInterface (symbol() call).
+            Self::_validate_sac_asset(&env, &group.asset_address)?;
+
+            let mut bps_sum: u32 = 0;
+            for r in group.recipients.iter() {
+                bps_sum = bps_sum.checked_add(r.share_bps).ok_or(Error::Overflow)?;
+            }
+            if bps_sum != 10_000 {
+                return Err(Error::InvalidSplit);
+            }
+            if group.recipients.is_empty() {
+                return Err(Error::EmptyRecipients);
+            }
+        }
+
+        let contract_addr = env.current_contract_address();
+
+        // ── Execute each group atomically ─────────────────────────────────────
+        for group in groups.iter() {
+            let token_client = token::Client::new(&env, &group.asset_address);
+
+            // Pull total_amount from sender into contract.
+            let _ = token_client
+                .try_transfer(&sender, &contract_addr, &group.total_amount)
+                .map_err(|_| Error::TransferFailed)?;
+
+            // Distribute to recipients.
+            for r in group.recipients.iter() {
+                let amount = group
+                    .total_amount
+                    .checked_mul(r.share_bps as i128)
+                    .ok_or(Error::Overflow)?
+                    / 10_000;
+                if amount > 0 {
+                    let _ = token_client
+                        .try_transfer(&contract_addr, &r.address, &amount)
+                        .map_err(|_| Error::TransferFailed)?;
+                }
+            }
+
+            env.events().publish(
+                (symbol_short!("masset"), group.asset_address.clone()),
+                group.total_amount,
+            );
+        }
+
+>>>>>>> main
         Ok(())
     }
 
@@ -1119,6 +1385,7 @@ impl SplitterV3 {
         Self::_distribute(
             &env,
             &token_client,
+            &token_addr,
             &contract_addr,
             &recipients,
             total_amount,
@@ -1215,6 +1482,37 @@ impl SplitterV3 {
         Err(Error::NotAuthorizedAdmin)
     }
 
+    /// #916: Validate that a proposal has reached quorum, mark it executed,
+    /// and return its action. The `predicate` ensures the caller is using the
+    /// right execution function for the proposal's action type.
+    fn _consume_admin_proposal(
+        env: &Env,
+        caller: &Address,
+        proposal_id: u64,
+        predicate: impl Fn(&AdminChangeAction) -> bool,
+    ) -> Result<AdminChangeAction, Error> {
+        Self::_require_quorum_admin(env, caller)?;
+        let mut proposal: AdminProposal = env
+            .storage()
+            .persistent()
+            .get(&DataKey::AdminProposal(proposal_id))
+            .ok_or(Error::ProposalNotFound)?;
+        if proposal.executed {
+            return Err(Error::AlreadyExecuted);
+        }
+        if !predicate(&proposal.action) {
+            return Err(Error::NotAuthorizedAdmin);
+        }
+        if proposal.approvals.len() < proposal.threshold {
+            return Err(Error::QuorumNotReached);
+        }
+        proposal.executed = true;
+        env.storage()
+            .persistent()
+            .set(&DataKey::AdminProposal(proposal_id), &proposal);
+        Ok(proposal.action)
+    }
+
     fn _set_verified(env: &Env, user: &Address, status: bool) {
         env.storage()
             .persistent()
@@ -1271,6 +1569,7 @@ impl SplitterV3 {
     fn _distribute(
         env: &Env,
         token_client: &token::Client,
+        asset: &Address,
         from: &Address,
         recipients: &Vec<Recipient>,
         distributable: i128,
@@ -1291,6 +1590,8 @@ impl SplitterV3 {
                 / 10_000;
             if amount > 0 {
                 token_client.transfer(from, &r.address, &amount);
+                // #921: emit per-recipient payment event
+                emit_individual_payment(env, &r.address, asset, amount, r.share_bps);
             }
         }
         env.events()

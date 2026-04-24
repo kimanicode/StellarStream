@@ -72,6 +72,24 @@ pub fn calculate_exponential_unlocked(total: i128, duration: i128, elapsed: i128
     total * ratio_sq / SCALE
 }
 
+/// Calculate a share based on basis points (1 BPS = 0.01%).
+/// 
+/// Logic: (amount * bps) / 10,000
+pub fn calculate_share(amount: i128, bps: u32) -> i128 {
+    if bps == 0 {
+        return 0;
+    }
+    // Using simple arithmetic; stroop-denominated amounts (i128) won't 
+    // overflow when multiplied by 10,000 (max ~10^22 vs i128::MAX ~10^38).
+    (amount * bps as i128) / 10_000
+}
+
+/// Calculate the residual share for the final recipient to ensure 
+/// strict atomicity and prevent locked funds (Rounding Strategy).
+pub fn calculate_residual_share(total_amount: i128, sum_distributed: i128) -> i128 {
+    total_amount.saturating_sub(sum_distributed)
+}
+
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct FixedPoint(pub i128);
 
@@ -308,5 +326,33 @@ mod tests {
         assert_eq!(calculate_exponential_unlocked(0, 100, 50), 0);
         assert_eq!(calculate_exponential_unlocked(1_000_000, 0, 50), 0);
         assert_eq!(calculate_exponential_unlocked(1_000_000, 100, -1), 0);
+    }
+
+    // ── BPS Math ─────────────────────────────────────────────────────────────
+
+    #[test]
+    fn test_calculate_share() {
+        // 33.33% of 1000
+        assert_eq!(calculate_share(1000, 3333), 333);
+        // 100%
+        assert_eq!(calculate_share(1000, 10000), 1000);
+        // 0%
+        assert_eq!(calculate_share(1000, 0), 0);
+    }
+
+    #[test]
+    fn test_rounding_strategy_residual() {
+        let total = 1000i128;
+        // Two recipients with 3333 BPS each
+        let share1 = calculate_share(total, 3333); // 333
+        let share2 = calculate_share(total, 3333); // 333
+        
+        let sum_distributed = share1 + share2; // 666
+        
+        // Final recipient with 3334 BPS (sum = 10000)
+        let share3 = calculate_residual_share(total, sum_distributed);
+        
+        assert_eq!(share3, 334);
+        assert_eq!(share1 + share2 + share3, total);
     }
 }

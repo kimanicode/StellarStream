@@ -18,6 +18,7 @@ pub use types::{
     StreamCancelledV2Event, StreamClaimV2Event, StreamCreatedV2Event, StreamMigratedEvent,
     StreamRefilledEvent, StreamStatus, StreamToppedUpEvent, StreamV2, MAX_MEMO_LENGTH,
     ClawbackRebalanceEvent, ContractPausedEvent, ContractUnpausedEvent, DexPoolInfo,
+    BpsRecipient, ClawbackRebalanceEvent, ContractPausedEvent, ContractUnpausedEvent, DexPoolInfo,
     FeesWithdrawnEvent, LedgerFootprint, MigrationEvent, MultiAssetRecipient, Recipient, NebulaEvent,
     Operation, OperationExecutedEvent, OperationScheduledEvent, PendingRateUpdate, PermitArgs,
     PermitStreamCreatedEvent, RateUpdateAcceptedEvent, RateUpdateCancelledEvent,
@@ -4639,6 +4640,71 @@ impl Contract {
         );
 
         Ok(balance)
+    }
+
+    // ----------------------------------------------------------------
+    // Issue #912 - Variable Basis Point (BPS) Math Engine
+    // ----------------------------------------------------------------
+
+    /// Disburse funds to multiple recipients using Basis Points (BPS) for 
+    /// pro-rata distribution. Implements the "Residual Allocation Strategy"
+    /// to handle integer rounding dust.
+    pub fn split_by_bps(
+        env: Env,
+        sender: Address,
+        asset: Address,
+        recipients: Vec<BpsRecipient>,
+        total_amount: i128,
+    ) -> Result<(), Error> {
+        Self::require_not_paused(&env)?;
+
+        let n = recipients.len();
+        if n == 0 || n > 120 {
+            return Err(Error::BatchTooLarge);
+        }
+
+        if total_amount <= 0 {
+            return Err(Error::BelowDustThreshold);
+        }
+
+        sender.require_auth();
+
+        // 1. Pre-flight check: validate BPS sum equals 10,000 (100%)
+        let mut total_bps: u32 = 0;
+        for entry in recipients.iter() {
+            total_bps = total_bps.checked_add(entry.bps).ok_or(Error::Overflow)?;
+        }
+        if total_bps != 10_000 {
+            return Err(Error::InvalidBpsSum);
+        }
+
+        // 2. Reentrancy guard
+        storage::acquire_lock(&env)?;
+
+        // 3. Execution: Distribute shares
+        let token_client = soroban_sdk::token::TokenClient::new(&env, &asset);
+        let mut sum_distributed: i128 = 0;
+
+        for i in 0..n {
+            let entry = recipients.get(i).unwrap();
+            
+            let amount = if i == n - 1 {
+                // Final recipient: apply rounding strategy to assign remainder
+                math::calculate_residual_share(total_amount, sum_distributed)
+            } else {
+                let share = math::calculate_share(total_amount, entry.bps);
+                sum_distributed = sum_distributed.checked_add(share).ok_or(Error::Overflow)?;
+                share
+            };
+
+            if amount > 0 {
+                // transfer traps and reverts the transaction on failure, ensuring atomicity
+                token_client.transfer(&sender, &entry.address, &amount);
+            }
+        }
+
+        storage::release_lock(&env);
+        Ok(())
     }
 }
 

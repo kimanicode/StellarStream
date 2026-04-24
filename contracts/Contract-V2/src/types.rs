@@ -280,6 +280,14 @@ pub struct Recipient {
     pub amount: i128,
 }
 
+/// A recipient entry for `split_by_bps`.
+#[contracttype]
+#[derive(Clone, Debug, PartialEq)]
+pub struct BpsRecipient {
+    pub address: Address,
+    pub bps: u32,
+}
+
 // ----------------------------------------------------------------
 // Issue #601 - Multi-Asset Batch Disbursement
 // ----------------------------------------------------------------
