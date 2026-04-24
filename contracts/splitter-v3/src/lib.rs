@@ -97,7 +97,8 @@ pub struct SplitConfig {
     pub sender: Address,
     pub recipients: Vec<Recipient>,
     pub total_amount: i128,
-    pub release_time: u64,
+    /// Ledger timestamp after which the split can be executed (#915).
+    pub release_ledger: u64,
     pub status: SplitStatus,
 }
 
@@ -728,7 +729,7 @@ impl SplitterV3 {
         sender: Address,
         recipients: Vec<Recipient>,
         total_amount: i128,
-        release_time: u64,
+        release_ledger: u64,
     ) -> Result<u64, Error> {
         Self::_require_not_paused(&env)?;
         sender.require_auth();
@@ -757,7 +758,7 @@ impl SplitterV3 {
             sender,
             recipients,
             total_amount,
-            release_time,
+            release_ledger,
             status: SplitStatus::Pending,
         };
         env.storage()
@@ -766,7 +767,7 @@ impl SplitterV3 {
         Self::_bump_persistent_ttl(&env, &DataKey::ScheduledSplit(split_id));
 
         env.events()
-            .publish((symbol_short!("sched"), split_id), release_time);
+            .publish((symbol_short!("sched"), split_id), release_ledger);
 
         Ok(split_id)
     }
@@ -783,7 +784,8 @@ impl SplitterV3 {
             SplitStatus::Executed => return Err(Error::SplitAlreadyExecuted),
             SplitStatus::Pending => {}
         }
-        if env.ledger().timestamp() < config.release_time {
+        // #915: funds cannot be released until release_ledger timestamp is reached.
+        if env.ledger().timestamp() < config.release_ledger {
             return Err(Error::NotYetReleased);
         }
         let token_addr: Address = env.storage().instance().get(&DataKey::Token).unwrap();
@@ -823,6 +825,8 @@ impl SplitterV3 {
         Ok(())
     }
 
+    /// #915: Cancel a time-locked split. Only the owner (sender) can cancel,
+    /// and only before the release_ledger timestamp is reached.
     pub fn cancel_split(env: Env, caller: Address, split_id: u64) -> Result<(), Error> {
         caller.require_auth();
         let mut config: SplitConfig = env
@@ -838,7 +842,8 @@ impl SplitterV3 {
             SplitStatus::Executed => return Err(Error::SplitAlreadyExecuted),
             SplitStatus::Pending => {}
         }
-        if env.ledger().timestamp() >= config.release_time {
+        // #915: cancellation is only allowed before the release_ledger timestamp.
+        if env.ledger().timestamp() >= config.release_ledger {
             return Err(Error::SplitNotYetDue);
         }
         let token_addr: Address = env.storage().instance().get(&DataKey::Token).unwrap();
