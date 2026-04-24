@@ -5,8 +5,10 @@ use soroban_sdk::{
 };
 
 mod errors;
+mod events;
 mod storage;
 use errors::Error;
+use events::{emit_individual_payment, emit_split_executed};
 use storage::DataKey;
 
 #[cfg(test)]
@@ -529,6 +531,7 @@ impl SplitterV3 {
             Self::_distribute(
                 &env,
                 &token_client,
+                &token_addr,
                 &contract_addr,
                 &recipients,
                 distributable,
@@ -558,7 +561,7 @@ impl SplitterV3 {
                     share_bps: new_bps,
                 });
             }
-            Self::_distribute(&env, &token_client, &contract_addr, &scaled, distributable)?;
+            Self::_distribute(&env, &token_client, &token_addr, &contract_addr, &scaled, distributable)?;
         }
 
         // ── Mark hash as processed (temporary storage, TTL ~1 day) ───────────
@@ -659,6 +662,7 @@ impl SplitterV3 {
         Self::_distribute(
             &env,
             &token_client,
+            &token_addr,
             &contract_addr,
             &config.recipients,
             distributable,
@@ -880,6 +884,18 @@ impl SplitterV3 {
             }
         }
 
+        // #926: use try_transfer — panic on any failure to trigger atomic rollback.
+        for r in recipients.iter() {
+            let amount = total_amount
+                .checked_mul(r.share_bps as i128)
+                .ok_or(Error::Overflow)?
+                / 10_000;
+            if amount > 0 {
+                let _ = token_client
+                    .try_transfer(&contract_addr, &r.address, &amount)
+                    .map_err(|_| Error::TransferFailed)?;
+                // #921: emit per-recipient payment event
+                emit_individual_payment(&env, &r.address, &asset, amount, r.share_bps);
         // Pull funds from sender into contract first.
         let _ = token_client
             .try_transfer(&sender, &contract_addr, &total_amount)
@@ -913,6 +929,9 @@ impl SplitterV3 {
                 }
             }
         }
+
+        // #921: emit top-level split executed event after successful transfer loop
+        emit_split_executed(&env, &sender, total_amount);
 
         Ok(())
     }
@@ -1114,6 +1133,7 @@ impl SplitterV3 {
         Self::_distribute(
             &env,
             &token_client,
+            &token_addr,
             &contract_addr,
             &recipients,
             total_amount,
@@ -1244,6 +1264,7 @@ impl SplitterV3 {
     fn _distribute(
         env: &Env,
         token_client: &token::Client,
+        asset: &Address,
         from: &Address,
         recipients: &Vec<Recipient>,
         distributable: i128,
@@ -1264,6 +1285,8 @@ impl SplitterV3 {
                 / 10_000;
             if amount > 0 {
                 token_client.transfer(from, &r.address, &amount);
+                // #921: emit per-recipient payment event
+                emit_individual_payment(env, &r.address, asset, amount, r.share_bps);
             }
         }
         env.events()
