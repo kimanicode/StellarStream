@@ -9494,6 +9494,8 @@ export namespace Prisma {
     receiver: string | null
     amount: bigint | null
     metadata: string | null
+    parentHash: string | null
+    entryHash: string | null
     createdAt: Date | null
   }
 
@@ -9509,6 +9511,8 @@ export namespace Prisma {
     receiver: string | null
     amount: bigint | null
     metadata: string | null
+    parentHash: string | null
+    entryHash: string | null
     createdAt: Date | null
   }
 
@@ -9524,6 +9528,8 @@ export namespace Prisma {
     receiver: number
     amount: number
     metadata: number
+    parentHash: number
+    entryHash: number
     createdAt: number
     _all: number
   }
@@ -9553,6 +9559,8 @@ export namespace Prisma {
     receiver?: true
     amount?: true
     metadata?: true
+    parentHash?: true
+    entryHash?: true
     createdAt?: true
   }
 
@@ -9568,6 +9576,8 @@ export namespace Prisma {
     receiver?: true
     amount?: true
     metadata?: true
+    parentHash?: true
+    entryHash?: true
     createdAt?: true
   }
 
@@ -9583,6 +9593,8 @@ export namespace Prisma {
     receiver?: true
     amount?: true
     metadata?: true
+    parentHash?: true
+    entryHash?: true
     createdAt?: true
     _all?: true
   }
@@ -9685,6 +9697,8 @@ export namespace Prisma {
     receiver: string | null
     amount: bigint | null
     metadata: string | null
+    parentHash: string | null
+    entryHash: string | null
     createdAt: Date
     _count: EventLogCountAggregateOutputType | null
     _avg: EventLogAvgAggregateOutputType | null
@@ -9719,6 +9733,8 @@ export namespace Prisma {
     receiver?: boolean
     amount?: boolean
     metadata?: boolean
+    parentHash?: boolean
+    entryHash?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["eventLog"]>
 
@@ -9734,6 +9750,8 @@ export namespace Prisma {
     receiver?: boolean
     amount?: boolean
     metadata?: boolean
+    parentHash?: boolean
+    entryHash?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["eventLog"]>
 
@@ -9749,6 +9767,8 @@ export namespace Prisma {
     receiver?: boolean
     amount?: boolean
     metadata?: boolean
+    parentHash?: boolean
+    entryHash?: boolean
     createdAt?: boolean
   }
 
@@ -9768,6 +9788,8 @@ export namespace Prisma {
       receiver: string | null
       amount: bigint | null
       metadata: string | null
+      parentHash: string | null
+      entryHash: string | null
       createdAt: Date
     }, ExtArgs["result"]["eventLog"]>
     composites: {}
@@ -10173,6 +10195,8 @@ export namespace Prisma {
     readonly receiver: FieldRef<"EventLog", 'String'>
     readonly amount: FieldRef<"EventLog", 'BigInt'>
     readonly metadata: FieldRef<"EventLog", 'String'>
+    readonly parentHash: FieldRef<"EventLog", 'String'>
+    readonly entryHash: FieldRef<"EventLog", 'String'>
     readonly createdAt: FieldRef<"EventLog", 'DateTime'>
   }
     
@@ -34631,6 +34655,8 @@ export namespace Prisma {
     receiver: 'receiver',
     amount: 'amount',
     metadata: 'metadata',
+    parentHash: 'parentHash',
+    entryHash: 'entryHash',
     createdAt: 'createdAt'
   };
 
@@ -35697,6 +35723,8 @@ export namespace Prisma {
     receiver?: StringNullableFilter<"EventLog"> | string | null
     amount?: BigIntNullableFilter<"EventLog"> | bigint | number | null
     metadata?: StringNullableFilter<"EventLog"> | string | null
+    parentHash?: StringNullableFilter<"EventLog"> | string | null
+    entryHash?: StringNullableFilter<"EventLog"> | string | null
     createdAt?: DateTimeFilter<"EventLog"> | Date | string
   }
 
@@ -35712,6 +35740,8 @@ export namespace Prisma {
     receiver?: SortOrderInput | SortOrder
     amount?: SortOrderInput | SortOrder
     metadata?: SortOrderInput | SortOrder
+    parentHash?: SortOrderInput | SortOrder
+    entryHash?: SortOrderInput | SortOrder
     createdAt?: SortOrder
   }
 
@@ -35731,6 +35761,8 @@ export namespace Prisma {
     receiver?: StringNullableFilter<"EventLog"> | string | null
     amount?: BigIntNullableFilter<"EventLog"> | bigint | number | null
     metadata?: StringNullableFilter<"EventLog"> | string | null
+    parentHash?: StringNullableFilter<"EventLog"> | string | null
+    entryHash?: StringNullableFilter<"EventLog"> | string | null
     createdAt?: DateTimeFilter<"EventLog"> | Date | string
   }, "id" | "txHash_eventIndex">
 
@@ -35746,6 +35778,8 @@ export namespace Prisma {
     receiver?: SortOrderInput | SortOrder
     amount?: SortOrderInput | SortOrder
     metadata?: SortOrderInput | SortOrder
+    parentHash?: SortOrderInput | SortOrder
+    entryHash?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: EventLogCountOrderByAggregateInput
     _avg?: EventLogAvgOrderByAggregateInput
@@ -35769,6 +35803,8 @@ export namespace Prisma {
     receiver?: StringNullableWithAggregatesFilter<"EventLog"> | string | null
     amount?: BigIntNullableWithAggregatesFilter<"EventLog"> | bigint | number | null
     metadata?: StringNullableWithAggregatesFilter<"EventLog"> | string | null
+    parentHash?: StringNullableWithAggregatesFilter<"EventLog"> | string | null
+    entryHash?: StringNullableWithAggregatesFilter<"EventLog"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"EventLog"> | Date | string
   }
 
@@ -38192,6 +38228,8 @@ export namespace Prisma {
     receiver?: string | null
     amount?: bigint | number | null
     metadata?: string | null
+    parentHash?: string | null
+    entryHash?: string | null
     createdAt?: Date | string
   }
 
@@ -38207,6 +38245,8 @@ export namespace Prisma {
     receiver?: string | null
     amount?: bigint | number | null
     metadata?: string | null
+    parentHash?: string | null
+    entryHash?: string | null
     createdAt?: Date | string
   }
 
@@ -38222,6 +38262,8 @@ export namespace Prisma {
     receiver?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    parentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    entryHash?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38237,6 +38279,8 @@ export namespace Prisma {
     receiver?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    parentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    entryHash?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38252,6 +38296,8 @@ export namespace Prisma {
     receiver?: string | null
     amount?: bigint | number | null
     metadata?: string | null
+    parentHash?: string | null
+    entryHash?: string | null
     createdAt?: Date | string
   }
 
@@ -38267,6 +38313,8 @@ export namespace Prisma {
     receiver?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    parentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    entryHash?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38282,6 +38330,8 @@ export namespace Prisma {
     receiver?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    parentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    entryHash?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -40988,6 +41038,8 @@ export namespace Prisma {
     receiver?: SortOrder
     amount?: SortOrder
     metadata?: SortOrder
+    parentHash?: SortOrder
+    entryHash?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -41009,6 +41061,8 @@ export namespace Prisma {
     receiver?: SortOrder
     amount?: SortOrder
     metadata?: SortOrder
+    parentHash?: SortOrder
+    entryHash?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -41024,6 +41078,8 @@ export namespace Prisma {
     receiver?: SortOrder
     amount?: SortOrder
     metadata?: SortOrder
+    parentHash?: SortOrder
+    entryHash?: SortOrder
     createdAt?: SortOrder
   }
 

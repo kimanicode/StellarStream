@@ -214,6 +214,8 @@ exports.Prisma.EventLogScalarFieldEnum = {
   receiver: 'receiver',
   amount: 'amount',
   metadata: 'metadata',
+  parentHash: 'parentHash',
+  entryHash: 'entryHash',
   createdAt: 'createdAt'
 };
 
